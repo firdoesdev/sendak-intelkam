@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
 
+use App\Models\Division;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -46,5 +48,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function division(){
+        return $this->belongsTo(Division::class);   
     }
 }
