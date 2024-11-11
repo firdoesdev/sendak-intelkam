@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             DivisionSeeder::class,
-            WarehouseSeeder::class
+            WarehouseSeeder::class,
+            BulletTypeSeeder::class,
+            WeaponTypeSeeder::class
         ]);
 
     }
