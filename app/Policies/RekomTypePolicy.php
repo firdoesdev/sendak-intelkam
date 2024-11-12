@@ -14,6 +14,7 @@ class RekomTypePolicy
     public function viewAny(User $user): bool
     {
         //
+        return true;
     }
 
     /**
@@ -22,6 +23,7 @@ class RekomTypePolicy
     public function view(User $user, RekomType $rekomType): bool
     {
         //
+        return true;
     }
 
     /**
@@ -30,6 +32,7 @@ class RekomTypePolicy
     public function create(User $user): bool
     {
         //
+        return true;
     }
 
     /**
@@ -38,6 +41,7 @@ class RekomTypePolicy
     public function update(User $user, RekomType $rekomType): bool
     {
         //
+        return true;
     }
 
     /**
@@ -46,6 +50,7 @@ class RekomTypePolicy
     public function delete(User $user, RekomType $rekomType): bool
     {
         //
+        return true;
     }
 
     /**
@@ -54,6 +59,7 @@ class RekomTypePolicy
     public function restore(User $user, RekomType $rekomType): bool
     {
         //
+        return true;
     }
 
     /**
@@ -62,5 +68,6 @@ class RekomTypePolicy
     public function forceDelete(User $user, RekomType $rekomType): bool
     {
         //
+        return true;
     }
 }

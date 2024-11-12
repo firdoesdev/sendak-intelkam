@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Role;
 
 return new class extends Migration
 {
@@ -13,11 +14,9 @@ return new class extends Migration
     {
         Schema::create('rekoms', function (Blueprint $table) {
             $table->id();
+            $table->string('no_rekom')->nullable();
             // Has Many Relation with `Roles` from Spatie\Permission
-            $table->foreignId('role_id')
-                ->references('id')
-                ->on('roles')
-                ->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Role::class)->nullable();
             $table->timestamps();
         });
     }
