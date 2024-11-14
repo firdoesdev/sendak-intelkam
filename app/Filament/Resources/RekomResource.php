@@ -101,6 +101,11 @@ class RekomResource extends Resource
                             ]),
                         Forms\Components\TextInput::make('no_rekom')
                             ->label('Kaliber'),
+                        Forms\Components\Select::make('no_rekom')
+                            ->options([
+                                'Polsek gresik'
+                            ])
+                            ->label('Gudang Penyimpanan'),
                     ])->columnSpan(8),
 
 
