@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             WarehouseSeeder::class,
             BulletTypeSeeder::class,
-            WeaponTypeSeeder::class
+            WeaponTypeSeeder::class,
+            OwnerTypeSeeder::class,
         ]);
 
         $user_handak = User::create(

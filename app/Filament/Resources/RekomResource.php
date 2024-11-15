@@ -11,6 +11,7 @@ use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -43,71 +44,8 @@ class RekomResource extends Resource
         return $form
             ->schema([
                 Grid::make(12)->schema([
-
-                    Fieldset::make('Data Pemilik')->schema([
-                        Forms\Components\Select::make('no_rekom')
-                            ->label('Jenis Kepemilikan')
-                            ->options([
-                                'Perorangan' => 'Perorangan',
-                                'Perusahaan' => 'Perusahaan'
-                            ])
-                            ->required(),
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('NIK')
-                            ->required(),
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('Nama')
-                            ->required(),
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('Alamat')
-                            ->required(),
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('Nomor Telepon')
-                            ->required(),
-                    ])->columnSpan(8),
-
-                    Fieldset::make('Masa Berlaku')->schema([
-
-                        Placeholder::make('Masa Berlaku')
-                        ->content(
-                            now()),
-                       
-                        Forms\Components\DatePicker::make('no_rekom')
-                        ->label('Masa Berlaku')
-                        ->default(now())
-                        ->columnSpanFull(),
-                        
-                        Forms\Components\Actions::make([
-                            Forms\Components\Actions\Action::make('Update Masa Berlaku')
-                                
-                                ->action(function (Forms\Get $get, Forms\Set $set) {
-                                    $set('excerpt', str($get('content'))->words(45, end: ''));
-                                })->requiresConfirmation()
-                        ])
-                        ->columnSpanFull(),
-                        
-                        
-                    ])
-                    ->columnSpan(4),
-
-                    Fieldset::make('Data Senjata')->schema([
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('Nomor Seri Senjata'),
-                        Forms\Components\Select::make('no_rekom')
-                            ->label('Jenis Senjata')
-                            ->options([
-                                'Perorangan' => 'Perorangan',
-                                'Perusahaan' => 'Perusahaan'
-                            ]),
-                        Forms\Components\TextInput::make('no_rekom')
-                            ->label('Kaliber'),
-                        Forms\Components\Select::make('no_rekom')
-                            ->options([
-                                'Polsek gresik'
-                            ])
-                            ->label('Gudang Penyimpanan'),
-                    ])->columnSpan(8),
-
+                    
+                //   Select/
 
                 ]),
             ]);
