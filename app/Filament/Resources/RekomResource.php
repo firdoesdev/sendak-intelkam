@@ -10,8 +10,10 @@ use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -36,17 +38,25 @@ class RekomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static bool $shouldSkipAuthorization = true;
 
     public static function form(Form $form): Form
     {
+        $user = auth()->user();
 
         // dump(auth()->user()->hasRole('super-admin'));
         return $form
             ->schema([
-                Grid::make(12)->schema([
-                    
-                //   Select/
-
+                Grid::make(12)
+                ->schema([
+                    Group::make([
+                        BelongsToSelect::make('owner_type_id')
+                        ->relationship('ownerType', 'name')
+                        ->required()
+                        ->disabled($user->hasRole('super-admin') ? true : false)
+                    ])
+                    ->relationship('owner')
+                    ->columnSpan(6),
                 ]),
             ]);
     }

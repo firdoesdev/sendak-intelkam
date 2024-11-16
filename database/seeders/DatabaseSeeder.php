@@ -6,6 +6,8 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
@@ -23,24 +25,67 @@ class DatabaseSeeder extends Seeder
             OwnerTypeSeeder::class,
         ]);
 
-        $user_handak = User::create(
-            [
-                'name' => 'Handak',
-                'email' => 'handak@gmail.com',
-                'password' => bcrypt('password'),
-                'email_verified_at' => now(),
-            ],
+        // $roles = ['Handak', 'Polsus', 'Beladiri', 'Olahraga'];
+        // foreach ($roles as $roleName) {
+        //     Role::firstOrCreate(['name' => $roleName]);
+        // }
 
-        );
+        // $permissions = [
+        //     'view reports',
+        //     'create reports',
+        //     'edit reports',
+        //     'delete reports',
+        //     'users.*'
+        // ];
 
-        Role::insert([
-            ['name' => 'handak','guard_name' => 'web'],
-            ['name' => 'polsus','guard_name' => 'web'],
-            ['name' => 'olahraga','guard_name' => 'web'],
-            
-        ]);
+      
+        // foreach ($permissions as $permissionName) {
+        //     Permission::firstOrCreate(['name' => $permissionName]);
+        // }
 
-        $user_handak->assignRole('handak');
+        // Role::where('name', 'Handak')->first()->givePermissionTo(Permission::all());
+        // Role::where('name', 'Polsus')->first()->givePermissionTo(Permission::all());
+        // Role::where('name', 'Beladiri')->first()->givePermissionTo(Permission::all());
+        // Role::where('name', 'Olahraga')->first()->givePermissionTo(Permission::all());
+
+        //   // Buat users
+        //   $users = [
+        //     [
+        //         'name' => 'User Handak',
+        //         'email' => 'handak@example.com',
+        //         'password' => Hash::make('password'),
+        //         'role' => 'Handak',
+        //     ],
+        //     [
+        //         'name' => 'User Polsus',
+        //         'email' => 'polsus@example.com',
+        //         'password' => Hash::make('password'),
+        //         'role' => 'Polsus',
+        //     ],
+        //     [
+        //         'name' => 'User Beladiri',
+        //         'email' => 'beladiri@example.com',
+        //         'password' => Hash::make('password'),
+        //         'role' => 'Beladiri',
+        //     ],
+        //     [
+        //         'name' => 'User Olahraga',
+        //         'email' => 'olahraga@example.com',
+        //         'password' => Hash::make('password'),
+        //         'role' => 'Olahraga',
+        //     ],
+        // ];
+
+        // foreach ($users as $userData) {
+        //     $user = User::firstOrCreate(
+        //         ['email' => $userData['email']],
+        //         ['name' => $userData['name'], 'password' => $userData['password']]
+        //     );
+
+        //     // Assign role ke user
+        //     $role = Role::where('name', $userData['role'])->first();
+        //     $user->assignRole($role);
+        // }
 
     }
 }

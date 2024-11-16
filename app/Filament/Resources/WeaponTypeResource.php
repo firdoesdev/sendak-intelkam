@@ -20,6 +20,8 @@ class WeaponTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Master Data';
 
+    protected static ?string $slug = 'master-data/weapon-types';
+
     public static function form(Form $form): Form
     {
         return $form
