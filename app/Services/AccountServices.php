@@ -12,4 +12,6 @@ abstract class AccountServices
         //
     }
 
+    public abstract function initAccount():void;
+
 }
