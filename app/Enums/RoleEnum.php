@@ -21,18 +21,17 @@ enum RoleEnum
         };
     }
 
-    public static function values(): array
+    public function value(): string
     {
-        return array_column(self::cases(), 'value');
+        // return array_column(self::cases(), 'value');
+        return match ($this) {
+            self::HANDAK => 'handak',
+            self::POLSUS => 'polsus',
+            self::BELADIRI => 'beladiri',
+            self::OLAHRAGA => 'olahraga',
+        };
     }
 
-    public static function labels(): array
-    {
-        return array_map(fn (self $case) => $case->label(), self::cases());
-    }
+    
 
-    public static function options(): array
-    {
-        return array_combine(self::values(), self::labels());
-    }
 }
