@@ -36,8 +36,33 @@ class DatabaseSeeder extends Seeder
         ]);
 
         
-        $this->handakAccountService->createAccount();
+        $this->handakAccountService->initAccount();
 
+        $this->createMenu();
+
+    }
+
+    private function createMenu():void
+    {
+        $menus = [
+            [
+                'title' => 'Rekomendasi',
+                'uri' => '/rekoms',
+                'icon' => 'heroicon-o-home',
+                'order' => 1,
+                'parent_id' => null,
+            ]
+        ];
+
+        foreach ($menus as $menu) {
+            Menu::create([
+                'title' => $menu['title'],
+                'uri' => $menu['uri'],
+                'icon' => $menu['icon'],
+                'order' => $menu['order'],
+                'parent_id' => $menu['parent_id'],
+            ]);
+        }
     }
 
 
