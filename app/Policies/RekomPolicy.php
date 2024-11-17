@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\RekomType;
+use App\Models\Rekom;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class RekomTypePolicy
+class RekomPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -20,7 +20,7 @@ class RekomTypePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, RekomType $rekomType): bool
+    public function view(User $user, Rekom $rekom): bool
     {
         //
         return true;
@@ -38,7 +38,7 @@ class RekomTypePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, RekomType $rekomType): bool
+    public function update(User $user, Rekom $rekom): bool
     {
         //
         return true;
@@ -47,7 +47,7 @@ class RekomTypePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, RekomType $rekomType): bool
+    public function delete(User $user, Rekom $rekom): bool
     {
         //
         return true;
@@ -56,7 +56,7 @@ class RekomTypePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, RekomType $rekomType): bool
+    public function restore(User $user, Rekom $rekom): bool
     {
         //
         return true;
@@ -65,7 +65,7 @@ class RekomTypePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, RekomType $rekomType): bool
+    public function forceDelete(User $user, Rekom $rekom): bool
     {
         //
         return true;

@@ -20,6 +20,7 @@ class RekomTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $slug = 'master-data/rekom-types';
 
     public static function form(Form $form): Form
     {

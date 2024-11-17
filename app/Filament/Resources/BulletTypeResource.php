@@ -21,6 +21,8 @@ class BulletTypeResource extends Resource
 
     protected static ?string $navigationGroup = 'Master Data';
 
+    protected static ?string $slug = 'master-data/bullet-types';
+
     public static function form(Form $form): Form
     {
         return $form

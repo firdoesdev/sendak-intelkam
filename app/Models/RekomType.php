@@ -9,4 +9,9 @@ class RekomType extends Model
 {
     /** @use HasFactory<\Database\Factories\RekomTypeFactory> */
     use HasFactory;
+
+    public function rekoms()
+    {
+        return $this->hasMany(Rekom::class);
+    }
 }

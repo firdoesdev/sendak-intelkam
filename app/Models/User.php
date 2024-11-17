@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SolutionForest\FilamentAccessManagement\Concerns\FilamentUserHelpers;
+use Spatie\Permission\Traits\HasRoles;
 
-use App\Models\Division;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,FilamentUserHelpers;
+    use HasFactory,HasRoles ,Notifiable,FilamentUserHelpers;
     
-
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+        return true;
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -48,9 +54,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function division(){
-        return $this->belongsTo(Division::class);   
     }
 }
