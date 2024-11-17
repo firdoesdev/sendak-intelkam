@@ -11,14 +11,17 @@ use SolutionForest\FilamentAccessManagement\Models\Menu;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use App\Services\AccountServices\HandakAccountService;
+use App\Services\AccountServices\PolsusAccountService;
 
 
 
 class DatabaseSeeder extends Seeder 
 {
     private $handakAccountService;
-    public function __construct(HandakAccountService $handakAccountService){
+    private $polsusAccountService;
+    public function __construct(HandakAccountService $handakAccountService,PolsusAccountService $polsusAccountService){
         $this->handakAccountService = $handakAccountService;
+        $this->polsusAccountService = $polsusAccountService;
     }
     /**
      * Seed the application's database.
@@ -37,6 +40,7 @@ class DatabaseSeeder extends Seeder
 
         
         $this->handakAccountService->initAccount();
+        $this->polsusAccountService->initAccount();
 
         $this->createMenu();
 

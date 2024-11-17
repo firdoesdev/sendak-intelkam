@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\AccountServices;
+
 use App\Enums\RoleEnum;
 use App\Services\AccountServices;
 
@@ -9,9 +10,11 @@ use Spatie\Permission\Models\Permission;
 
 use App\Models\User;
 
-class HandakAccountService extends AccountServices
+
+class PolsusAccountService extends AccountServices
 {
     
+
     private $additionalPermissions = [
         [
             'name' => 'rekoms.*',
@@ -29,7 +32,7 @@ class HandakAccountService extends AccountServices
 
     private function createRole(): void
     {
-        Role::firstOrCreate(['name' => RoleEnum::HANDAK->value()]);
+        Role::firstOrCreate(['name' => RoleEnum::POLSUS->value()]);
     }
     private function assignPermission(): void
     {
@@ -38,10 +41,10 @@ class HandakAccountService extends AccountServices
                 'name' => $permission['name'],
                 'http_path' => $permission['http_path']
             ]);
-            $permissionCreate->assignRole(RoleEnum::HANDAK->value());
+            $permissionCreate->assignRole(RoleEnum::POLSUS->value());
         }
 
-        Role::where('name', RoleEnum::HANDAK->value())->first()->givePermissionTo(Permission::all());
+        Role::where('name', RoleEnum::POLSUS->value())->first()->givePermissionTo(Permission::all());
     }
     public function initAccount(): void
     {
@@ -49,11 +52,11 @@ class HandakAccountService extends AccountServices
         $this->assignPermission();
 
         $user = User::firstOrCreate([
-            'name' => 'Handak',
-            'email' => 'handak@example.com',
+            'name' => 'Polsus',
+            'email' => 'polsus@example.com',
             'password' => bcrypt('password'),
         ]);
 
-        $user->assignRole(RoleEnum::HANDAK->value());
+        $user->assignRole(RoleEnum::POLSUS->value());
     }
 }
