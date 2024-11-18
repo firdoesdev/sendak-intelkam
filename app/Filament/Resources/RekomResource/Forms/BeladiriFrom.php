@@ -22,40 +22,51 @@ class BeladiriFrom
         return [
             Grid::make(12)
                 ->schema([
+                    
                     Group::make([
                         BelongsToSelect::make('owner_type_id')
                             ->label('Jenis Kepemilikan')
                             ->relationship('ownerType', 'name')
                             ->required()
                             ->default($defaultOwnership)
-                            ->disabled(true)
+                            ->disabled(true),
+                        Fieldset::make('Data Kepemilikan')
+                            ->schema([
+                                TextInput::make('nama'),
+                                TextInput::make('alamat')
+                            ])->columnSpanFull(),
                     ])
                         ->relationship('owner')
                         ->columnSpan(8),
+                    
                     Fieldset::make('Masa Berlaku')
-                    ->schema([
-                        Select::make('status')
-                        ->options([
-                            'active' =>'active',
-                            'inactive' => 'inactive'
-                        ])->columnSpanFull()
-                    ])->columnSpan(4),
-
-                    Fieldset::make('Data Kepemilikan')
                         ->schema([
-                            TextInput::make('nama'),
-                            TextInput::make('alamat')
-                        ]),
-                    Fieldset::make('Info Senjata')
+                            Select::make('status')
+                                ->options([
+                                    'active' => 'active',
+                                    'inactive' => 'inactive'
+                                ])->columnSpanFull()
+                        ])->columnSpan(4),
+
+                        Fieldset::make('Info Senjata')
                         ->schema([
                             TextInput::make('serial_number')
-                            ->label('Nomor Seri Senjata'),
+                                ->label('Nomor Seri Senjata'),
                             TextInput::make('weapon_type')
-                            ->label('Jenis Pistol'),
+                                ->label('Jenis Pistol'),
                             TextInput::make('caliber')
-                            ->label('Kaliber')
-                        ])
-                ])
+                                ->label('Kaliber')
+                        ])->columnSpan(8),
+
+                        
+                 
+                    
+
+                   
+
+
+                ]),
+
 
         ];
     }

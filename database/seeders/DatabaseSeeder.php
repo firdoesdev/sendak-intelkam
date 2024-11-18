@@ -74,6 +74,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => $menu['icon'],
                 'order' => $menu['order'],
                 'parent_id' => $menu['parent_id'],
+                'is_filament_panel'=>true
             ]);
         }
     }
