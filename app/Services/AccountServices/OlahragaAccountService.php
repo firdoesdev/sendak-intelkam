@@ -36,7 +36,7 @@ class OlahragaAccountService extends AccountServices
 
     private function createRole(): void
     {
-        Role::firstOrCreate(['name' => RoleEnum::POLSUS->value()]);
+        Role::firstOrCreate(['name' => RoleEnum::OLAHRAGA->value()]);
     }
     private function assignPermission(): void
     {
@@ -45,10 +45,10 @@ class OlahragaAccountService extends AccountServices
                 'name' => $permission['name'],
                 'http_path' => $permission['http_path']
             ]);
-            $permissionCreate->assignRole(RoleEnum::POLSUS->value());
+            $permissionCreate->assignRole(RoleEnum::OLAHRAGA->value());
         }
 
-        Role::where('name', RoleEnum::POLSUS->value())->first()->givePermissionTo(Permission::all());
+        Role::where('name', RoleEnum::OLAHRAGA->value())->first()->givePermissionTo(Permission::all());
     }
     public function initAccount(): void
     {
@@ -56,11 +56,11 @@ class OlahragaAccountService extends AccountServices
         $this->assignPermission();
 
         $user = User::firstOrCreate([
-            'name' => 'Polsus',
-            'email' => 'polsus@example.com',
+            'name' => 'Olahraga',
+            'email' => 'olahraga@example.com',
             'password' => bcrypt('password'),
         ]);
 
-        $user->assignRole(RoleEnum::POLSUS->value());
+        $user->assignRole(RoleEnum::OLAHRAGA->value());
     }
 }

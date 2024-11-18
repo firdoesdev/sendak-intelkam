@@ -10,8 +10,11 @@ use Spatie\Permission\Models\Permission;
 use SolutionForest\FilamentAccessManagement\Models\Menu;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
+
 use App\Services\AccountServices\HandakAccountService;
 use App\Services\AccountServices\PolsusAccountService;
+use App\Services\AccountServices\BeladiriAccountService;
+use App\Services\AccountServices\OlahragaAccountService;
 
 
 
@@ -19,9 +22,13 @@ class DatabaseSeeder extends Seeder
 {
     private $handakAccountService;
     private $polsusAccountService;
-    public function __construct(HandakAccountService $handakAccountService,PolsusAccountService $polsusAccountService){
+    private $olahragaAccountService;
+    private $beladiriAccountService;
+    public function __construct(HandakAccountService $handakAccountService,PolsusAccountService $polsusAccountService, BeladiriAccountService $beladiriAccountService, OlahragaAccountService $olahragaAccountService){
         $this->handakAccountService = $handakAccountService;
         $this->polsusAccountService = $polsusAccountService;
+        $this->beladiriAccountService = $beladiriAccountService;
+        $this->olahragaAccountService = $olahragaAccountService;
     }
     /**
      * Seed the application's database.
@@ -41,6 +48,8 @@ class DatabaseSeeder extends Seeder
         
         $this->handakAccountService->initAccount();
         $this->polsusAccountService->initAccount();
+        $this->olahragaAccountService->initAccount();
+        $this->beladiriAccountService->initAccount();
 
         $this->createMenu();
 
