@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Spatie\Permission\Models\Role;
 
+use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
+
 
 class RekomResource extends Resource
 {
@@ -44,21 +46,16 @@ class RekomResource extends Resource
     {
         $user = auth()->user();
 
-        // dump(auth()->user()->hasRole('super-admin'));
+        // dump($user);
+
+       if($user->hasRole('beladiri')){
         return $form
-            ->schema([
-                Grid::make(12)
-                ->schema([
-                    Group::make([
-                        BelongsToSelect::make('owner_type_id')
-                        ->relationship('ownerType', 'name')
-                        ->required()
-                        ->disabled($user->hasRole('super-admin') ? true : false)
-                    ])
-                    ->relationship('owner')
-                    ->columnSpan(6),
-                ]),
-            ]);
+            ->schema(BeladiriFrom::getSchema());
+       }
+
+        
+        return $form;
+            
     }
 
     public static function table(Table $table): Table
