@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OwnerType;
+use App\Models\Weapon;
 
 class Owner extends Model
 {
@@ -15,10 +16,17 @@ class Owner extends Model
         'name',
         'email',
         'password',
+        'address'
     ];
 
     public function ownerType()
     {
         return $this->belongsTo(OwnerType::class);
+    }
+
+    public function weapons()
+    {
+        return $this->belongsToMany(Weapon::class,'owner_weapons');
+                        
     }
 }

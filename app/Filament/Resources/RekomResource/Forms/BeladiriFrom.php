@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\RekomResource\Forms;
 
+use App\Models\WeaponType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Group;
@@ -19,6 +20,8 @@ class BeladiriFrom
     {
         $defaultOwnership = OwnerType::where('name', self::$ownershipType)->first()->id;
 
+        $weaponTypes = WeaponType::pluck('name', 'id');
+
         return [
             Grid::make(12)
                 ->schema([
@@ -29,34 +32,33 @@ class BeladiriFrom
                             ->relationship('ownerType', 'name')
                             ->required()
                             ->default($defaultOwnership)
-                            ->disabled(true),
+                            ->disabled(true)
+                            ->columnSpan(8),
                         Fieldset::make('Data Kepemilikan')
                             ->schema([
-                                TextInput::make('nama'),
-                                TextInput::make('alamat')
-                            ])->columnSpanFull(),
+                                TextInput::make('name'),
+                                TextInput::make('address')
+                            ])->columnSpan(8),
+
+                        Fieldset::make('Info Senjata')
+                            ->schema([
+                                TextInput::make('weapons')
+                                    ->label('Nomor Seri Senjata'),
+                                TextInput::make('weapons.name'),
+                                Select::make('weapons.weapon_type_id')
+                                    ->placeholder('Masukan Jenis Senjata')
+                                    ->options($weaponTypes)
+                                    ->label('Jenis Pistol'),
+                                TextInput::make('weapons.caliber')
+                                    ->label('Kaliber')
+                            ])
+                            ->columnSpan(8),
                     ])
                         ->relationship('owner')
                         ->columnSpan(8),
                     
-                    Fieldset::make('Masa Berlaku')
-                        ->schema([
-                            Select::make('status')
-                                ->options([
-                                    'active' => 'active',
-                                    'inactive' => 'inactive'
-                                ])->columnSpanFull()
-                        ])->columnSpan(4),
 
-                        Fieldset::make('Info Senjata')
-                        ->schema([
-                            TextInput::make('serial_number')
-                                ->label('Nomor Seri Senjata'),
-                            TextInput::make('weapon_type')
-                                ->label('Jenis Pistol'),
-                            TextInput::make('caliber')
-                                ->label('Kaliber')
-                        ])->columnSpan(8),
+                       
 
                         
                  

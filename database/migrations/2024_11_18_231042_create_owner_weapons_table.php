@@ -1,9 +1,11 @@
 <?php
 
-use App\Models\OwnerType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
+use App\Models\Owner;
+use App\Models\Weapon;
 
 return new class extends Migration
 {
@@ -12,13 +14,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('owners', function (Blueprint $table) {
+        Schema::create('owner_weapons', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('no_ktp')->unique()->nullable();
-            $table->string('address')->nullable();
-            $table->string('phone')->nullable();
-            $table->foreignIdFor(model: OwnerType::class)->nullable();
+            $table->foreignIdFor(Weapon::class)->nullable();
+            $table->foreignIdFor(Owner::class)->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('owners');
+        Schema::dropIfExists('owner_weapons');
     }
 };

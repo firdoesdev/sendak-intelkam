@@ -5,6 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\BulletType;
+use App\Models\WeaponType;
+use App\Models\Warehouse;
+
 
 return new class extends Migration
 {
@@ -18,7 +21,9 @@ return new class extends Migration
             $table->string('serial')->unique();
             $table->string('name');
             $table->string('caliber');
-            $table->foreignIdFor(BulletType::class);
+            $table->foreignIdFor(BulletType::class)->nullable();
+            $table->foreignIdFor(WeaponType::class)->nullable();
+            $table->foreignIdFor(Warehouse::class)->nullable();
             $table->timestamps();
         });
     }
