@@ -6,6 +6,7 @@ use App\Filament\Resources\OwnerResource\Pages;
 use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Models\Owner;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,6 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 
 class OwnerResource extends Resource
 {
@@ -25,9 +28,14 @@ class OwnerResource extends Resource
         return $form
             ->schema([
                 //
+               Fieldset::make('Data Kepemilikan')
+               ->schema([
                 TextInput::make('name')->required(),
+                TextInput::make('no_ktp')->required(),
                 TextInput::make('address')->required(),
                 TextInput::make('phone')->required(),
+               ])
+
             ]);
     }
 
@@ -36,6 +44,10 @@ class OwnerResource extends Resource
         return $table
             ->columns([
                 //
+                // Tables\Columns\Column::make('name')
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('address'),
+                
             ])
             ->filters([
                 //
@@ -54,6 +66,7 @@ class OwnerResource extends Resource
     {
         return [
             //
+            RekomsRelationManager::class
         ];
     }
 

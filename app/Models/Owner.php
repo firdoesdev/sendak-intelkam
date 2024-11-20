@@ -16,6 +16,9 @@ class Owner extends Model
 
     protected $fillable = [
         'name',
+        'no_ktp',
+        'address',
+        'phone'
     ];
 
     public function ownerType()
