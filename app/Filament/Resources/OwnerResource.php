@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OwnerResource\Pages;
 use App\Filament\Resources\OwnerResource\RelationManagers;
+use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -66,7 +67,9 @@ class OwnerResource extends Resource
     {
         return [
             //
-            RekomsRelationManager::class
+            RekomsRelationManager::class,
+            WeaponsRelationManager::class,
+            
         ];
     }
 
