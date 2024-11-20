@@ -42,31 +42,21 @@ class BeladiriFrom
 
                         Fieldset::make('Info Senjata')
                             ->schema([
-                                TextInput::make('weapons')
+                                TextInput::make('name')
                                     ->label('Nomor Seri Senjata'),
-                                TextInput::make('weapons.name'),
-                                Select::make('weapons.weapon_type_id')
-                                    ->placeholder('Masukan Jenis Senjata')
-                                    ->options($weaponTypes)
-                                    ->label('Jenis Pistol'),
-                                TextInput::make('weapons.caliber')
-                                    ->label('Kaliber')
+                                // TextInput::make('weapons.name'),
+                                // Select::make('weapons.weapon_type_id')
+                                //     ->placeholder('Masukan Jenis Senjata')
+                                //     ->options($weaponTypes)
+                                //     ->label('Jenis Pistol'),
+                                // TextInput::make('weapons.caliber')
+                                //     ->label('Kaliber')
                             ])
                             ->columnSpan(8),
                     ])
                         ->relationship('owner')
                         ->columnSpan(8),
                     
-
-                       
-
-                        
-                 
-                    
-
-                   
-
-
                 ]),
 
 

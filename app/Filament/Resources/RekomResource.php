@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RekomResource\Pages;
 
+use App\Filament\Resources\RekomResource\RelationManagers\OwnerRelationManager;
 use App\Models\Rekom;
 
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 
 use Filament\Resources\Resource;
@@ -17,6 +20,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
+
+
 
 
 class RekomResource extends Resource
@@ -49,7 +54,7 @@ class RekomResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('owner.name')->label('Pemilik'),
-                Tables\Columns\TextColumn::make('owner.weapons'),
+                
             ])
             ->filters([
                 //
@@ -68,6 +73,7 @@ class RekomResource extends Resource
     {
         return [
             //
+            // OwnerRelationManager::class,
         ];
     }
 

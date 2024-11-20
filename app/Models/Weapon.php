@@ -19,7 +19,7 @@ class Weapon extends Model
     ];
 
     public function owners(){
-        return $this->belongsToMany(Owner::class,'owner_weapons');
+        return $this->belongsToMany(Owner::class,'owner_weapon');
     }
 }
 
