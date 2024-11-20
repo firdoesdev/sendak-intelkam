@@ -64,7 +64,15 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'heroicon-o-home',
                 'order' => 1,
                 'parent_id' => null,
-            ]
+            ],
+            [
+                'title' => 'Owners',
+                'uri' => '/owners',
+                'icon' => 'heroicon-o-home',
+                'order' => 2,
+                'parent_id' => null,
+            ],
+            
         ];
 
         foreach ($menus as $menu) {

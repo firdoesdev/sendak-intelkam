@@ -19,10 +19,7 @@ class BeladiriAccountService
    }
 
    private $additionalPermissions = [
-    //    [
-    //        'name' => 'rekoms.*',
-    //        'http_path' => '/admin/rekoms*',
-    //    ],
+   
        [
            'name' => 'rekoms.create',
            'http_path' => '/admin/rekoms/create',
@@ -43,6 +40,24 @@ class BeladiriAccountService
            'name' => 'logout.*',
            'http_path' => '/admin/logout',
        ],
+
+       //Owner Menu
+       [
+        'name' => 'owners.create',
+        'http_path' => '/admin/owners/create',
+    ],
+    [
+         'name' => 'owners.update',
+         'http_path' => '/admin/owners/*/edit',
+     ],
+     [
+         'name' => 'owners.view',
+         'http_path' => '/admin/owners/*',
+     ],
+     [
+         'name' => 'owners.viewAny',
+         'http_path' => '/admin/owners',
+     ],
    ];
 
    private function createRole(): void
