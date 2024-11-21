@@ -1,0 +1,58 @@
+name: Deploy Laravel Application
+
+on:
+  push:
+    branches:
+      - develop # Sesuaikan dengan branch yang Anda gunakan
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout kode dari repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Setup PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3 # Sesuaikan dengan versi PHP Anda
+        extensions: mbstring, pdo, mysql, curl, dom
+        coverage: none
+
+    # Instal Composer Dependencies
+    - name: Install Composer Dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    # Setup Node.js (Jika ada build assets)
+    # - name: Setup Node.js
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: '18' # Versi Node.js
+    # - name: Install Node Dependencies and Build Assets
+    #   run: |
+    #     npm ci
+    #     npm run build
+
+    # Copy Hasil ke Server
+    - name: Deploy to Server
+      uses: appleboy/scp-action@v0.2.1
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        source: .
+        target: /root/sendak-intelkam
+
+    # Jalankan Perintah Setelah Deployment
+    - name: Run Post-Deploy Commands
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
+        cd /root/sendak-intelkam
+        php artisan migrate --force
+        php artisan config:cache
+        php artisan route:cache
+        php artisan view:cache
+        EOF
