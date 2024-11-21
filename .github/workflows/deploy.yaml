@@ -37,7 +37,7 @@ jobs:
     #     npm run build
 
     - name: Debug DNS Resolution
-    run: ping -c 4 ${{ secrets.SERVER_HOST }} || echo "Cannot resolve hostname"
+      run: ping -c 4 ${{ secrets.SERVER_HOST }} || echo "Cannot resolve hostname"
   
 
     - name: Debug SSH Connection
