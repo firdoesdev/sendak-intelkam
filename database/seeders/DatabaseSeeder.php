@@ -64,7 +64,15 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'heroicon-o-home',
                 'order' => 1,
                 'parent_id' => null,
-            ]
+            ],
+            [
+                'title' => 'Owners',
+                'uri' => '/owners',
+                'icon' => 'heroicon-o-home',
+                'order' => 2,
+                'parent_id' => null,
+            ],
+            
         ];
 
         foreach ($menus as $menu) {
@@ -74,6 +82,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => $menu['icon'],
                 'order' => $menu['order'],
                 'parent_id' => $menu['parent_id'],
+                'is_filament_panel'=>true
             ]);
         }
     }

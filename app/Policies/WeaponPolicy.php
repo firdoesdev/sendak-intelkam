@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Owner;
 use App\Models\User;
+use App\Models\Weapon;
 use Illuminate\Auth\Access\Response;
 
-class OwnerPolicy
+class WeaponPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -20,7 +20,7 @@ class OwnerPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Owner $owner): bool
+    public function view(User $user, Weapon $weapon): bool
     {
         //
         return true;
@@ -38,7 +38,7 @@ class OwnerPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Owner $owner): bool
+    public function update(User $user, Weapon $weapon): bool
     {
         //
         return true;
@@ -47,7 +47,7 @@ class OwnerPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Owner $owner): bool
+    public function delete(User $user, Weapon $weapon): bool
     {
         //
         return true;
@@ -56,7 +56,7 @@ class OwnerPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Owner $owner): bool
+    public function restore(User $user, Weapon $weapon): bool
     {
         //
         return true;
@@ -65,7 +65,7 @@ class OwnerPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Owner $owner): bool
+    public function forceDelete(User $user, Weapon $weapon): bool
     {
         //
         return true;

@@ -21,7 +21,8 @@ class Rekom extends Model
         return $this->belongsTo(Role::class);
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo(Owner::class);
     }
 
