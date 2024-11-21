@@ -36,6 +36,10 @@ jobs:
     #     npm ci
     #     npm run build
 
+    - name: Debug SSH Connection
+      run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} echo "SSH Connection Successful"
+
+
     # Copy Hasil ke Server
     - name: Deploy to Server
       uses: appleboy/scp-action@v0.1.7
