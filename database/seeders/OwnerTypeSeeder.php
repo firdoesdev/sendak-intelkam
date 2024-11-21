@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\OwnerTypeEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,12 +15,12 @@ class OwnerTypeSeeder extends Seeder
     {
         //
         \App\Models\OwnerType::create([
-            'name' => 'Individual',
+            'name' => OwnerTypeEnum::INDIVIDUAL->value(),
             
         ]);
 
         \App\Models\OwnerType::create([
-            'name' => 'Company',
+            'name' => OwnerTypeEnum::COMPANY->value(),
             
         ]);
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Owner;
+use App\Models\WeaponType;
 
 class Weapon extends Model
 {
@@ -20,6 +21,10 @@ class Weapon extends Model
 
     public function owners(){
         return $this->belongsToMany(Owner::class,'owner_weapon');
+    }
+
+    public function weaponType(){
+        return $this->belongsTo(WeaponType::class);
     }
 }
 
