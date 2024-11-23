@@ -31,14 +31,6 @@ class OwnerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function infolist(Infolist $infolist): Infolist
-{
-    return $infolist
-        ->schema([
-            // ...
-        ]);
-}
-
     public static function form(Form $form): Form
     {
 
@@ -59,10 +51,22 @@ class OwnerResource extends Resource
                             ->required()
                             ->hidden(),
                             
-                            TextInput::make('name')->required(),
-                            TextInput::make('no_ktp')->required(),
-                            TextInput::make('address')->required(),
-                            TextInput::make('phone')->required(),
+                            TextInput::make('name')
+                            ->placeholder('ex: John Doe')
+                            ->required(),
+                            
+                            TextInput::make('no_ktp')
+                            ->numeric()
+                            ->placeholder('ex: 9999999999999999')
+                            ->required(),
+
+                            TextInput::make('address')
+                            ->placeholder('ex: Jalan Raya No. 1')
+                            ->required(),
+                            TextInput::make('phone')
+                            ->placeholder('ex: 08123456789')
+                            ->numeric()
+                            ->required(),
                             
                         ]),
 
@@ -78,7 +82,14 @@ class OwnerResource extends Resource
                 //
                 // Tables\Columns\Column::make('name')
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('address'),
+                Tables\Columns\TextColumn::make('rekoms.created_at')
+                ->label('Tanggal Rekom Terbit')
+                ->date(),
+                Tables\Columns\TextColumn::make('rekoms.no_rekom')
+                ->badge(),
+                Tables\Columns\TextColumn::make('weapons.serial')
+                ->label('Seri Senjata')
+                ->badge(),
 
             ])
             ->filters([

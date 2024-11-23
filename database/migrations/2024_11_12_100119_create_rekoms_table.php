@@ -17,6 +17,8 @@ return new class extends Migration
         Schema::create('rekoms', function (Blueprint $table) {
             $table->id();
             $table->string('no_rekom')->nullable();
+            $table->date('activated_at')->nullable();
+            $table->date('expired_at')->nullable();
             // Has Many Relation with `Roles` from Spatie\Permission
             $table->foreignIdFor(Role::class)->nullable();
             $table->foreignIdFor(Owner::class)->nullable();
