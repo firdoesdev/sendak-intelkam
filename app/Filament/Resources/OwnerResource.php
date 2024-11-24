@@ -31,11 +31,12 @@ class OwnerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    // protected static ?string $navigationGroup = 'Master Data';
+
     public static function form(Form $form): Form
     {
 
         $defaultOwnerTypeId = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first()->id;
-        // dump($defaultOwnerType);
 
         return $form
             ->schema([
@@ -79,10 +80,9 @@ class OwnerResource extends Resource
     {
         return $table
             ->columns([
-                //
-                // Tables\Columns\Column::make('name')
+                
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('rekoms.created_at')
+                Tables\Columns\TextColumn::make('rekoms.activitated_at')
                 ->label('Tanggal Rekom Terbit')
                 ->date(),
                 Tables\Columns\TextColumn::make('rekoms.no_rekom')
