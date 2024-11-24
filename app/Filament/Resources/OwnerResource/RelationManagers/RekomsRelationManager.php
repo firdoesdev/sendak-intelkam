@@ -33,7 +33,15 @@ class RekomsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('no_rekom')
                     ->required()
-                    ->maxLength(255), 
+                    ->columnSpanFull(), 
+                Forms\Components\DatePicker::make('activated_at')
+                    ->label('Tanggal Rekom Terbit')
+                    ->default(now())
+                    ->required(),
+                Forms\Components\DatePicker::make('expired_at')
+                    ->label('Tanggal Rekom Kadaluarsa')
+                    ->default(now()->addYear())
+                    ->required(),
             ]);
     
 

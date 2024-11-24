@@ -33,9 +33,10 @@ class Rekom extends Model
             $rekom = new RekomsService();
            
             $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
-            $model->activated_at = $rekom->activateDate(); // Set nilai saat model dibuat
-            $model->expired_at = $rekom->expiredDate();   //Expired setelah 1 tahun
+            
         });
+
+        
     }
 
     public function role(){

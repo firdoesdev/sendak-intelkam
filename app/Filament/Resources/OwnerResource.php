@@ -8,6 +8,7 @@ use App\Filament\Resources\OwnerResource\Pages;
 use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
+use Spatie\Permission\Models\Role;
 use App\Models\OwnerType;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
@@ -25,13 +26,25 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 
+use App\Services\RekomServices\RekomsService;
+
 class OwnerResource extends Resource
 {
     protected static ?string $model = Owner::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    // protected static ?string $navigationGroup = 'Master Data';
+    public static function getEloquentQuery(): Builder
+    {   
+        return parent::getEloquentQuery()
+        ->with(['rekoms'])
+        ->whereHas('rekoms', function ($query) {    
+            $rekoms = new RekomsService();
+            return$query->where('role_id', $rekoms->rekomDivision());
+        });
+        
+    }
+    
 
     public static function form(Form $form): Form
     {
@@ -90,6 +103,10 @@ class OwnerResource extends Resource
                 Tables\Columns\TextColumn::make('weapons.serial')
                 ->label('Seri Senjata')
                 ->badge(),
+
+                Tables\Columns\TextColumn::make('rekoms.role.name')
+                ->label('Divisi')
+                ->badge()
 
             ])
             ->filters([
