@@ -8,14 +8,36 @@ use Spatie\Permission\Models\Role;
 use App\Models\Owner;
 use App\Models\RekomType;
 
+use App\Services\RekomServices\RekomsService;
+
 class Rekom extends Model
 {
     /** @use HasFactory<\Database\Factories\RekomFactory> */
     use HasFactory;
 
+    private $getRoleIdByUser;
+
+    
+
     protected $fillable = [
-        'no_rekom'  
+        'no_rekom',
+        'activated_at',
+        'expired_at',  
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $rekom = new RekomsService();
+           
+            $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
+            
+        });
+
+        
+    }
 
     public function role(){
         return $this->belongsTo(Role::class);

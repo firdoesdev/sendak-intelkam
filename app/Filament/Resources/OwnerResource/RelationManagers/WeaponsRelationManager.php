@@ -20,18 +20,29 @@ class WeaponsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('serial')
+                    ->label('Seri Senjata')
                     ->required()
                     ->maxLength(255),
+                    
                     Forms\Components\TextInput::make('name')
+                    ->label('Nama Senjata')
                     ->required()
                     ->maxLength(255),
+
                     Forms\Components\TextInput::make('caliber')
+                    ->label('Kaliber')
                     ->required()
                     ->maxLength(255),
 
                     BelongsToSelect::make('weapon_type_id')
+                    ->label('Jenis Senjata')
                     ->searchable()
                     ->relationship('weaponType', 'name'),
+
+                    BelongsToSelect::make('warehouse_id')
+                    ->label('Gudang')
+                    ->searchable()
+                    ->relationship('warehouse', 'name')
             ]);
     }
 

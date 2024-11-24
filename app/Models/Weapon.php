@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Owner;
 use App\Models\WeaponType;
+use App\Models\Warehouse;
 
 class Weapon extends Model
 {
@@ -25,6 +26,10 @@ class Weapon extends Model
 
     public function weaponType(){
         return $this->belongsTo(WeaponType::class);
+    }
+
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class);
     }
 }
 

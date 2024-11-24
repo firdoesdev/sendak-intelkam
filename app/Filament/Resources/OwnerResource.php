@@ -8,6 +8,7 @@ use App\Filament\Resources\OwnerResource\Pages;
 use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
+use Spatie\Permission\Models\Role;
 use App\Models\OwnerType;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
@@ -25,25 +26,30 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 
+use App\Services\RekomServices\RekomsService;
+
 class OwnerResource extends Resource
 {
     protected static ?string $model = Owner::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function infolist(Infolist $infolist): Infolist
-{
-    return $infolist
-        ->schema([
-            // ...
-        ]);
-}
+    public static function getEloquentQuery(): Builder
+    {   
+        return parent::getEloquentQuery()
+        ->with(['rekoms'])
+        ->whereHas('rekoms', function ($query) {    
+            $rekoms = new RekomsService();
+            return$query->where('role_id', $rekoms->rekomDivision());
+        });
+        
+    }
+    
 
     public static function form(Form $form): Form
     {
 
         $defaultOwnerTypeId = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first()->id;
-        // dump($defaultOwnerType);
 
         return $form
             ->schema([
@@ -59,10 +65,22 @@ class OwnerResource extends Resource
                             ->required()
                             ->hidden(),
                             
-                            TextInput::make('name')->required(),
-                            TextInput::make('no_ktp')->required(),
-                            TextInput::make('address')->required(),
-                            TextInput::make('phone')->required(),
+                            TextInput::make('name')
+                            ->placeholder('ex: John Doe')
+                            ->required(),
+                            
+                            TextInput::make('no_ktp')
+                            ->numeric()
+                            ->placeholder('ex: 9999999999999999')
+                            ->required(),
+
+                            TextInput::make('address')
+                            ->placeholder('ex: Jalan Raya No. 1')
+                            ->required(),
+                            TextInput::make('phone')
+                            ->placeholder('ex: 08123456789')
+                            ->numeric()
+                            ->required(),
                             
                         ]),
 
@@ -75,10 +93,20 @@ class OwnerResource extends Resource
     {
         return $table
             ->columns([
-                //
-                // Tables\Columns\Column::make('name')
+                
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('address'),
+                Tables\Columns\TextColumn::make('rekoms.activitated_at')
+                ->label('Tanggal Rekom Terbit')
+                ->date(),
+                Tables\Columns\TextColumn::make('rekoms.no_rekom')
+                ->badge(),
+                Tables\Columns\TextColumn::make('weapons.serial')
+                ->label('Seri Senjata')
+                ->badge(),
+
+                Tables\Columns\TextColumn::make('rekoms.role.name')
+                ->label('Divisi')
+                ->badge()
 
             ])
             ->filters([
