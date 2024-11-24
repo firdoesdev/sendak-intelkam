@@ -42,7 +42,15 @@ class BeladiriAccountService
        ],
 
        //Owner Menu
-       [
+    [
+        'name' => 'owners.*',
+        'http_path' => '/admin/owners*',
+    ],
+    [
+        'name' => 'owners.viewAny',
+        'http_path' => '/admin/owners',
+    ],
+    [
         'name' => 'owners.create',
         'http_path' => '/admin/owners/create',
     ],
