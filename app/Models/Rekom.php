@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
 use App\Models\Owner;
 use App\Models\RekomType;
 
-use App\Enums\RoleEnum;
+use App\Services\RekomServices\RekomsService;
 
 class Rekom extends Model
 {
     /** @use HasFactory<\Database\Factories\RekomFactory> */
     use HasFactory;
 
+    private $getRoleIdByUser;
 
+    
 
     protected $fillable = [
         'no_rekom',
@@ -29,30 +30,11 @@ class Rekom extends Model
         parent::boot();
 
         static::creating(function ($model) {
+            $rekom = new RekomsService();
            
-            $user = auth()->user();
-            
-
-            // Set role_id berdasarkan role yang dimiliki pengguna
-            if($user->hasRole(RoleEnum::BELADIRI->value())){                
-                $model->role_id = Role::where('name', RoleEnum::BELADIRI->value())->first()->id;
-            }
-    
-            if($user->hasRole(RoleEnum::HANDAK->value())){                
-                $model->role_id = Role::where('name', RoleEnum::HANDAK->value())->first()->id;
-            }
-    
-            if($user->hasRole(RoleEnum::POLSUS->value())){                
-                $model->role_id = Role::where('name', RoleEnum::POLSUS->value())->first()->id;
-            }
-    
-            if($user->hasRole(RoleEnum::OLAHRAGA->value())){                
-                $model->role_id = Role::where('name', RoleEnum::OLAHRAGA->value())->first()->id;
-            }
-
-            $model->activated_at = now(); // Set nilai saat model dibuat
-            //Expired setelah 1 tahun
-            $model->expired_at = now()->addYear();
+            $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
+            $model->activated_at = $rekom->activateDate(); // Set nilai saat model dibuat
+            $model->expired_at = $rekom->expiredDate();   //Expired setelah 1 tahun
         });
     }
 
