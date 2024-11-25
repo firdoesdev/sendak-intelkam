@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('owner_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_owned')->default(true);
-            $table->string('status');
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

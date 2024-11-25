@@ -9,6 +9,8 @@ use App\Models\Weapon;
 use App\Models\Rekom;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Services\RekomServices\RekomsService;
+
 class Owner extends Model
 {
     /** @use HasFactory<\Database\Factories\OwnerFactory> */

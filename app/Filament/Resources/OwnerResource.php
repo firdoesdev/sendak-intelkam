@@ -36,12 +36,13 @@ class OwnerResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {   
-        return parent::getEloquentQuery()
-        ->with(['rekoms'])
-        ->whereHas('rekoms', function ($query) {    
-            $rekoms = new RekomsService();
-            return$query->where('role_id', $rekoms->rekomDivision());
-        });
+        // return parent::getEloquentQuery()
+        // ->with(['rekoms'])
+        // ->whereHas('rekoms', function ($query) {    
+        //     $rekoms = new RekomsService();
+        //     return$query->where('role_id', $rekoms->rekomDivision());
+        // });
+        return parent::getEloquentQuery();
         
     }
     
@@ -86,7 +87,7 @@ class OwnerResource extends Resource
 
 
 
-            ]);
+                    ]);
     }
 
     public static function table(Table $table): Table

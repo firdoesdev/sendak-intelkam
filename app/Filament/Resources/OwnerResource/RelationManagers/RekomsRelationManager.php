@@ -18,33 +18,27 @@ use Spatie\Permission\Models\Role;
 
 class RekomsRelationManager extends RelationManager
 {
-    private $is_beladiri; 
-
-    public function __construct()
-    {
-        $this->is_beladiri = auth()->user()->hasRole(RoleEnum::BELADIRI->value());
-    }
 
     protected static string $relationship = 'rekoms';
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('no_rekom')
-                    ->required()
-                    ->columnSpanFull(), 
-                Forms\Components\DatePicker::make('activated_at')
-                    ->label('Tanggal Rekom Terbit')
-                    ->default(now())
-                    ->required(),
-                Forms\Components\DatePicker::make('expired_at')
-                    ->label('Tanggal Rekom Kadaluarsa')
-                    ->default(now()->addYear())
-                    ->required(),
-            ]);
+        // return $form
+        //     ->schema([
+        //         Forms\Components\TextInput::make('no_rekom')
+        //             ->required()
+        //             ->columnSpanFull(), 
+        //         Forms\Components\DatePicker::make('activated_at')
+        //             ->label('Tanggal Rekom Terbit')
+        //             ->default(now())
+        //             ->required(),
+        //         Forms\Components\DatePicker::make('expired_at')
+        //             ->label('Tanggal Rekom Kadaluarsa')
+        //             ->default(now()->addYear())
+        //             ->required(),
+        //     ]);
     
-
+        return $form;
 
     }
 

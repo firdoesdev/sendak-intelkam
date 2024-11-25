@@ -18,6 +18,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Weapon::class)->nullable();
             $table->foreignIdFor(Owner::class)->nullable();
+            $table->string('status')->default('active')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
