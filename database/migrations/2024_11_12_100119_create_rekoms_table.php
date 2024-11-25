@@ -7,6 +7,8 @@ use Spatie\Permission\Models\Role;
 use App\Models\Owner;
 use App\Models\RekomType;
 
+use App\Enums\RekomStatusEnum;
+
 return new class extends Migration
 {
     /**
@@ -19,6 +21,12 @@ return new class extends Migration
             $table->string('no_rekom')->nullable();
             $table->date('activated_at')->nullable();
             $table->date('expired_at')->nullable();
+            $table->enum('status', [
+                RekomStatusEnum::DRAFT->value(), 
+                RekomStatusEnum::ACTIVE->value(), 
+                RekomStatusEnum::EXPIRED->value(),
+                RekomStatusEnum::EXPIRED_SOON->value()
+                ])->default(RekomStatusEnum::DRAFT->value());
             // Has Many Relation with `Roles` from Spatie\Permission
             $table->foreignIdFor(Role::class)->nullable();
             $table->foreignIdFor(Owner::class)->nullable();

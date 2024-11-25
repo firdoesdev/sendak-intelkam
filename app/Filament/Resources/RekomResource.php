@@ -53,7 +53,27 @@ class RekomResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('no_rekom')->label('No Rekom')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('owner.name')->label('Pemilik'),
+                Tables\Columns\TextColumn::make('activated_at')
+                ->label('Tgl Rekom Terbit')
+                ->date(),
+                Tables\Columns\TextColumn::make('expired_at')
+                ->label('Tgl Rekom Kadaluarsa')
+                ->date(),
+                Tables\Columns\BadgeColumn::make('status')
+                ->colors([
+                    'success' => 'active',
+                    'danger' => 'expired',
+                    'warning' => 'draft'
+                ])
+                ->icons([
+                    'heroicon-s-check-circle' =>'active',
+                    'heroicon-s-x-circle' => 'expired',
+                    'heroicon-s-question-mark-circle' =>'draft',
+                    ])
+                ->label('Status')
+        
                 
             ])
             ->filters([

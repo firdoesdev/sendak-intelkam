@@ -23,6 +23,7 @@ class Rekom extends Model
         'no_rekom',
         'activated_at',
         'expired_at',  
+        'status',
     ];
 
     protected static function boot()

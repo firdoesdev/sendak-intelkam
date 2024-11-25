@@ -42,7 +42,7 @@ class OwnerResource extends Resource
             $rekoms = new RekomsService();
             return$query->where('role_id', $rekoms->rekomDivision());
         });
-        // return parent::getEloquentQuery();
+        
         
     }
     
@@ -71,14 +71,18 @@ class OwnerResource extends Resource
                             ->required(),
                             
                             TextInput::make('no_ktp')
+                            ->label('Nomor KTP')
                             ->numeric()
                             ->placeholder('ex: 9999999999999999')
                             ->required(),
 
                             TextInput::make('address')
+                            ->label('Alamat')
                             ->placeholder('ex: Jalan Raya No. 1')
                             ->required(),
+
                             TextInput::make('phone')
+                            ->label('Nomor Telepon')
                             ->placeholder('ex: 08123456789')
                             ->numeric()
                             ->required(),
@@ -96,11 +100,11 @@ class OwnerResource extends Resource
             ->columns([
                 
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('rekoms.activitated_at')
-                ->label('Tanggal Rekom Terbit')
-                ->date(),
                 Tables\Columns\TextColumn::make('rekoms.no_rekom')
                 ->badge(),
+                Tables\Columns\TextColumn::make('rekoms.activitated_at')
+                ->label('Tanggal Rekom Terbit')
+                ->date(),               
                 Tables\Columns\TextColumn::make('weapons.serial')
                 ->label('Seri Senjata')
                 ->badge(),

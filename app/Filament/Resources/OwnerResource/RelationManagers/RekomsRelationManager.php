@@ -27,7 +27,7 @@ class RekomsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('no_rekom')
                     ->required()
-                    ->columnSpanFull(), 
+                    ->columnSpanFull(),
                 Forms\Components\DatePicker::make('activated_at')
                     ->label('Tanggal Rekom Terbit')
                     ->default(now())
@@ -36,8 +36,14 @@ class RekomsRelationManager extends RelationManager
                     ->label('Tanggal Rekom Kadaluarsa')
                     ->default(now()->addYear())
                     ->required(),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'active' => 'active',
+                        'expired' => 'expired',
+                        'draft' => 'draft',
+                    ])->default('draft'),
             ]);
-    
+
         // return $form;
 
     }
@@ -48,14 +54,28 @@ class RekomsRelationManager extends RelationManager
             ->recordTitleAttribute('no_rekom')
             ->columns([
                 Tables\Columns\TextColumn::make('no_rekom'),
+
                 Tables\Columns\TextColumn::make('role.name')
                     ->label('Divisi'),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->icons([
+                        'heroicon-s-check-circle' =>'active',
+                        'heroicon-s-x-circle' => 'expired',
+                        'heroicon-s-question-mark-circle' =>'draft',
+                    ])
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'expired',
+                        'warning' => 'draft',
+                    ])
+                    ->label('Status Rekom'),
                 Tables\Columns\TextColumn::make('activated_at')
-                ->label('Tanggal Rekom Terbit')
-                ->date(),
+                    ->label('Tgl Rekom Terbit')
+                    ->extraAttributes(['class' => 'color-red-500'])
+                    ->date(),
                 Tables\Columns\TextColumn::make('expired_at')
-                ->label('Tanggal Rekom Kadaluarsa')
-                ->date(),
+                    ->label('Tgl Rekom Kadaluarsa')
+                    ->date(),
             ])
             ->filters([
                 //
