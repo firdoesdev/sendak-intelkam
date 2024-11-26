@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\Owner;
 use App\Models\RekomType;
 
-use App\Services\RekomServices\RekomsService;
+use App\Services\RekomServices\CommonRekomService;
 
 class Rekom extends Model
 {
@@ -31,9 +31,9 @@ class Rekom extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $rekom = new RekomsService();
+            $rekom = new CommonRekomService();
            
-            $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
+            $model->role_id = $rekom->getRekomRoleId();   // Set Rekom Division berdasarkan user login
             
         });
 

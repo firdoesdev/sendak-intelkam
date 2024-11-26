@@ -23,6 +23,16 @@ class Owner extends Model
         'phone'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        
+        // static::creating(function ($model) {
+        //     $rekom = new RekomsService();
+        //     $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
+        // });
+    }
+
     public function ownerType()
     {
         return $this->belongsTo(OwnerType::class);

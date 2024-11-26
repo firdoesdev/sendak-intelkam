@@ -6,15 +6,19 @@ use Spatie\Permission\Models\Role;
 use App\Enums\RoleEnum;
 use App\Services\RekomServices;
 
+interface CommonRekomServiceInterface{
+    public function getRekomRoleId();
+}
 
-class RekomsService extends RekomServices
+
+class CommonRekomService extends RekomServices implements CommonRekomServiceInterface
 {
     public function __construct()
     {
         //
     }
 
-    public function rekomDivision(){
+    public function getRekomRoleId(){
         $user = auth()->user();
 
         if($user->hasRole(RoleEnum::BELADIRI->value())){                

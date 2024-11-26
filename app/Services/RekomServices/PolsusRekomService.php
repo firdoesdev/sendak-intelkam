@@ -2,7 +2,9 @@
 
 namespace App\Services\RekomServices;
 
-class PolsusRekomService
+use App\Services\RekomServices\CommonRekomService;
+
+class PolsusRekomService extends CommonRekomService
 {
     /**
      * Create a new class instance.
@@ -11,4 +13,6 @@ class PolsusRekomService
     {
         //
     }
+
+    
 }
