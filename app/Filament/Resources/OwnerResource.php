@@ -3,30 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Enums\OwnerTypeEnum;
-use App\Enums\RoleEnum;
 use App\Filament\Resources\OwnerResource\Pages;
-use App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
-use Spatie\Permission\Models\Role;
 use App\Models\OwnerType;
-use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
-
-use App\Services\RekomServices\RekomsService;
+use App\Services\RekomServices\CommonRekomService;
 
 class OwnerResource extends Resource
 {
@@ -39,8 +29,8 @@ class OwnerResource extends Resource
         return parent::getEloquentQuery()
         ->with(['rekoms'])
         ->whereHas('rekoms', function ($query) {    
-            $rekoms = new RekomsService();
-            return$query->where('role_id', $rekoms->rekomDivision());
+            $rekoms = new CommonRekomService();
+            return$query->where('role_id', $rekoms->getRekomRoleId());
         });
         
         
