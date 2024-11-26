@@ -2,12 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RekomStatusEnum;
+use App\Enums\RoleEnum;
 use App\Filament\Resources\RekomResource\Pages;
 
 use App\Filament\Resources\RekomResource\RelationManagers\OwnerRelationManager;
 use App\Models\Rekom;
 
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 
@@ -42,8 +47,23 @@ class RekomResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-                ->schema(BeladiriFrom::getSchema());
+        return $form->schema([
+            Fieldset::make('Detail Rekom')
+            ->schema([
+                TextInput::make('no_rekom'),
+                Select::make('status')
+                ->options([
+                    RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
+                    RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
+                    RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
+                    RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label()
+                ]),
+                DatePicker::make('activated_at')
+                ->label('Tgl Rekom Terbit'),
+                DatePicker::make('expired_at')
+                ->label('Tgl Kadaluarsa'),
+            ])
+        ]);
 
         
 
@@ -55,7 +75,6 @@ class RekomResource extends Resource
             ->columns([
                 //
                 Tables\Columns\TextColumn::make('no_rekom')->label('No Rekom')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('owner.name')->label('Pemilik'),
                 Tables\Columns\TextColumn::make('activated_at')
                     ->label('Tgl Rekom Terbit')
                     ->date(),
