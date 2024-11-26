@@ -44,7 +44,7 @@ class Owner extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(Weapon::class, 'owner_weapon');
+        return $this->belongsToMany(Weapon::class, 'owner_weapons');
     }
 
     public function rekoms(): HasMany

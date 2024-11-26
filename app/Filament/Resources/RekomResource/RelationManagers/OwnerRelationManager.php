@@ -29,7 +29,15 @@ class OwnerRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                ->label('Nama Pemilik'),
+                Tables\Columns\TextColumn::make('no_ktp')
+                ->label('No KTP'),
+                Tables\Columns\TextColumn::make('phone')
+                ->label('Nomor Telepon'),
+                Tables\Columns\TextColumn::make('weapons.serial')
+                ->badge()
+                
             ])
             ->filters([
                 //

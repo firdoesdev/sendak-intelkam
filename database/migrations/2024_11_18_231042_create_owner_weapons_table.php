@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('owner_weapon', function (Blueprint $table) {
+        Schema::create('owner_weapons', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Weapon::class)->nullable();
             $table->foreignIdFor(Owner::class)->nullable();
