@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Permission\Models\Role;
 use App\Models\Owner;
 use App\Models\RekomType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use App\Services\RekomServices\CommonRekomService;
 

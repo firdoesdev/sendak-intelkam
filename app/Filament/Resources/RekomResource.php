@@ -42,17 +42,10 @@ class RekomResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = auth()->user();
-
-        // dump($user);
-
-        if ($user->hasRole('beladiri')) {
-            return $form
+        return $form
                 ->schema(BeladiriFrom::getSchema());
-        }
 
-
-        return $form;
+        
 
     }
 
@@ -103,7 +96,7 @@ class RekomResource extends Resource
     {
         return [
             //
-            // OwnerRelationManager::class,
+            OwnerRelationManager::class,
         ];
     }
 

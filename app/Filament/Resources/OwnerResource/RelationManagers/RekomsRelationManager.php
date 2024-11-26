@@ -59,18 +59,7 @@ class RekomsRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('role.name')
                     ->label('Divisi'),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->icons([
-                        'heroicon-s-check-circle' =>'active',
-                        'heroicon-s-x-circle' => 'expired',
-                        'heroicon-s-question-mark-circle' =>'draft',
-                    ])
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'expired',
-                        'warning' => 'draft',
-                    ])
-                    ->label('Status Rekom'),
+               
                 Tables\Columns\TextColumn::make('activated_at')
                     ->label('Tgl Rekom Terbit')
                     ->extraAttributes(['class' => 'color-red-500'])
@@ -78,6 +67,21 @@ class RekomsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('expired_at')
                     ->label('Tgl Rekom Kadaluarsa')
                     ->date(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->formatStateUsing(fn (string $state): string => RekomStatusEnum::from($state)->label())
+                    ->icons([
+                        'heroicon-s-check-circle' => RekomStatusEnum::ACTIVE->value(),
+                        'heroicon-s-x-circle' => RekomStatusEnum::EXPIRED->value(),
+                        'heroicon-s-exclamation-triangle' => RekomStatusEnum::EXPIRED_SOON->value(),
+                        'heroicon-s-question-mark-circle' =>RekomStatusEnum::DRAFT->value(),
+                    ])
+                    ->colors([
+                        'success' => RekomStatusEnum::ACTIVE->value(),
+                        'danger' => RekomStatusEnum::EXPIRED->value(),
+                        'warning' => RekomStatusEnum::EXPIRED_SOON->value(),
+                        'info' => RekomStatusEnum::DRAFT->value(),
+                    ])
+                    ->label('Status'),
             ])
             ->filters([
                 //
