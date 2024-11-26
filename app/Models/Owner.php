@@ -9,7 +9,8 @@ use App\Models\Weapon;
 use App\Models\Rekom;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-use App\Services\RekomServices\RekomsService;
+use App\Services\RekomServices\CommonRekomService;
+use App\Enums\RoleEnum;
 
 class Owner extends Model
 {
@@ -23,14 +24,17 @@ class Owner extends Model
         'phone'
     ];
 
+    //TODO Create Default Owner Type 
     protected static function boot()
     {
         parent::boot();
-        
-        // static::creating(function ($model) {
-        //     $rekom = new RekomsService();
-        //     $model->role_id = $rekom->rekomDivision();   // Set Rekom Division berdasarkan user login
-        // });
+
+        static::creating(function ($model) {
+            $rekom = new CommonRekomService();
+            if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
+                $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
+            }
+        });
     }
 
     public function ownerType()
@@ -40,10 +44,10 @@ class Owner extends Model
 
     public function weapons()
     {
-        return $this->belongsToMany(Weapon::class,'owner_weapon');                   
+        return $this->belongsToMany(Weapon::class, 'owner_weapon');
     }
 
-    public function rekoms():HasMany
+    public function rekoms(): HasMany
     {
         return $this->hasMany(Rekom::class);
     }

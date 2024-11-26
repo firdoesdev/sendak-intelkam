@@ -5,9 +5,12 @@ namespace App\Services\RekomServices;
 use Spatie\Permission\Models\Role;
 use App\Enums\RoleEnum;
 use App\Services\RekomServices;
+use App\Models\OwnerType;
+use App\Enums\OwnerTypeEnum;
 
 interface CommonRekomServiceInterface{
     public function getRekomRoleId();
+    public function getOwnerTypeIdByRole();
 }
 
 
@@ -36,6 +39,17 @@ class CommonRekomService extends RekomServices implements CommonRekomServiceInte
         if($user->hasRole(RoleEnum::OLAHRAGA->value())){                
             return Role::where('name', RoleEnum::OLAHRAGA->value())->first()->id;
         }
+    }
+
+    public function getOwnerTypeIdByRole(){
+        $user = auth()->user();
+        
+        if($user->hasRole(RoleEnum::BELADIRI->value())){                
+            return OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first()->id;
+        }
+
+        return null;
+        
     }
 
     public function activateDate(){

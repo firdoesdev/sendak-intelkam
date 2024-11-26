@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
+use App\Enums\RekomStatusEnum;
 use App\Enums\RoleEnum;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
@@ -38,10 +39,11 @@ class RekomsRelationManager extends RelationManager
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'active' => 'active',
-                        'expired' => 'expired',
-                        'draft' => 'draft',
-                    ])->default('draft'),
+                        RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
+                        RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
+                        RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
+                        RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label(),
+                    ])->default( RekomStatusEnum::DRAFT->value()),
             ]);
 
         // return $form;

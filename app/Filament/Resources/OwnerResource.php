@@ -32,8 +32,6 @@ class OwnerResource extends Resource
             $rekoms = new CommonRekomService();
             return$query->where('role_id', $rekoms->getRekomRoleId());
         });
-        
-        
     }
     
 
@@ -114,7 +112,8 @@ class OwnerResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

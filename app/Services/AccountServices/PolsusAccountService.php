@@ -28,6 +28,28 @@ class PolsusAccountService extends AccountServices
             'name' => 'logout.*',
             'http_path' => '/admin/logout',
         ],
+
+        //Owner Menu
+        [
+            'name' => 'owners.*',
+            'http_path' => '/admin/owners*',
+        ],
+        [
+            'name' => 'owners.viewAny',
+            'http_path' => '/admin/owners',
+        ],
+        [
+            'name' => 'owners.view',
+            'http_path' => '/admin/owners/*',
+        ],
+        [
+            'name' => 'owners.create',
+            'http_path' => '/admin/owners/create',
+        ],
+        [
+             'name' => 'owners.update',
+             'http_path' => '/admin/owners/*/edit',
+         ],
     ];
 
     private function createRole(): void

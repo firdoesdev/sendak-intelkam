@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Models\Rekom;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,6 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    //TODO Scheaduler
+    // ->withSchedule(function (Schedule $schedule) {
+    //     $rekom = new Rekom();
+    //     // $allRekom = $rekom->sele
+
+    //     $schedule
+    //         ->command('inspire')
+    //         ->everySecond();
+        
+    // })
     ->withMiddleware(function (Middleware $middleware) {
         //
     })

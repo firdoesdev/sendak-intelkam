@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
 
-
-
+use App\Services\RekomServices\CommonRekomService;
+use Str;
 
 class RekomResource extends Resource
 {
@@ -32,20 +32,28 @@ class RekomResource extends Resource
 
     protected static bool $shouldSkipAuthorization = true;
 
+    public static function getEloquentQuery(): Builder
+    {
+        // $rekoms = new CommonRekomService();
+        // return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
+        
+        return parent::getEloquentQuery();
+    }
+
     public static function form(Form $form): Form
     {
         $user = auth()->user();
 
         // dump($user);
 
-       if($user->hasRole('beladiri')){
-        return $form
-            ->schema(BeladiriFrom::getSchema());
-       }
+        if ($user->hasRole('beladiri')) {
+            return $form
+                ->schema(BeladiriFrom::getSchema());
+        }
 
-        
+
         return $form;
-            
+
     }
 
     public static function table(Table $table): Table
@@ -56,25 +64,27 @@ class RekomResource extends Resource
                 Tables\Columns\TextColumn::make('no_rekom')->label('No Rekom')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('owner.name')->label('Pemilik'),
                 Tables\Columns\TextColumn::make('activated_at')
-                ->label('Tgl Rekom Terbit')
-                ->date(),
+                    ->label('Tgl Rekom Terbit')
+                    ->date(),
                 Tables\Columns\TextColumn::make('expired_at')
-                ->label('Tgl Rekom Kadaluarsa')
-                ->date(),
+                    ->label('Tgl Rekom Kadaluarsa')
+                    ->date(),
                 Tables\Columns\BadgeColumn::make('status')
-                ->colors([
-                    'success' => 'active',
-                    'danger' => 'expired',
-                    'warning' => 'draft'
-                ])
-                ->icons([
-                    'heroicon-s-check-circle' =>'active',
-                    'heroicon-s-x-circle' => 'expired',
-                    'heroicon-s-question-mark-circle' =>'draft',
+                    ->colors([
+                        'success' => 'active',
+                        'danger' => 'expired',
+                        'warning' => 'draft'
                     ])
-                ->label('Status')
-        
-                
+                    ->icons([
+                        'heroicon-s-check-circle' => 'active',
+                        'heroicon-s-x-circle' => 'expired',
+                        'heroicon-s-question-mark-circle' => 'draft',
+                    ])
+                    ->label('Status'),
+                Tables\Columns\TextColumn::make('owner.ownerType.name')
+                ->label('Tipe Pemilik'),
+
+
             ])
             ->filters([
                 //
