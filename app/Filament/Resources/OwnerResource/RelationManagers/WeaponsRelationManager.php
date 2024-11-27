@@ -35,6 +35,11 @@ class WeaponsRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
 
+                    Forms\Components\TextInput::make('brand')
+                    ->label('Merk / Brand')
+                    ->required()
+                    ->maxLength(255),
+
                     BelongsToSelect::make('weapon_type_id')
                     ->label('Jenis Senjata')
                     ->searchable()
@@ -55,6 +60,7 @@ class WeaponsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('serial')->label('Nomor Seri')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('weaponType.name')->label('Jenis Senjata'),
                 Tables\Columns\TextColumn::make('caliber')->label('Kaliber'),
+                Tables\Columns\TextColumn::make('warehouse.name')->label('Gudang'),
             ])
             ->filters([
                 //

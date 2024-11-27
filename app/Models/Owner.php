@@ -21,7 +21,8 @@ class Owner extends Model
         'name',
         'no_ktp',
         'address',
-        'phone'
+        'phone',
+        'job'
     ];
 
     //TODO Create Default Owner Type 

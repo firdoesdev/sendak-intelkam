@@ -20,7 +20,8 @@ return new class extends Migration
             $table->id();
             $table->string('serial')->unique();
             $table->string('name');
-            $table->string('caliber');
+            $table->string('caliber')->nullable();
+            $table->string('brand')->nullable();
             $table->foreignIdFor(BulletType::class)->nullable();
             $table->foreignIdFor(WeaponType::class)->nullable();
             $table->foreignIdFor(Warehouse::class)->nullable();

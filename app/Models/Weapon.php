@@ -17,7 +17,8 @@ class Weapon extends Model
     protected $fillable = [
         'serial',
         'name',
-        'caliber'
+        'caliber',
+        'brand'
     ];
 
     public function owners(){

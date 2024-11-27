@@ -81,6 +81,10 @@ class OwnerResource extends Resource
                                     ->placeholder('ex: 08123456789')
                                     ->numeric()
                                     ->required(),
+                                TextInput::make('job')
+                                    ->label('Pekerjaan')
+                                    ->placeholder('ex: Pegawai Swasta')
+                                    ->required(),
 
                             ]),
 

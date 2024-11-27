@@ -12,6 +12,6 @@ class OwnerWeapon extends Pivot
     /** @use HasFactory<\Database\Factories\OwnerWeaponFactory> */
     // use HasFactory;
     protected $table = 'owner_weapons';
-    protected $fillable = ['owner_id', 'weapon_id'];
+    protected $fillable = ['owner_id', 'weapon_id','status','description'];
 
 }
