@@ -79,6 +79,13 @@ class DatabaseSeeder extends Seeder
                 'order' => 2,
                 'parent_id' => 7,
             ],
+            [
+                'title' => 'Data Senjata',
+                'uri' => '/weapons',
+                'icon' => 'heroicon-o-home',
+                'order' => 3,
+                'parent_id' => 7,
+            ],
             
             
         ];

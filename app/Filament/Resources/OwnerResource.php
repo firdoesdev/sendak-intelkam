@@ -30,6 +30,8 @@ class OwnerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -133,18 +135,8 @@ class OwnerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('no_ktp')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('phone')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('address')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('rekoms.no_rekom')
-                    ->label('No Rekom'),
-                Tables\Columns\TextColumn::make('rekoms.activated_at')
-                    ->label('Tanggal Rekom Terbit')
-                    ->date(),
-                Tables\Columns\TextColumn::make('rekoms.expired_at')
-                    ->label('Tanggal Rekom Terbit')
-                    ->date(),
-                Tables\Columns\TextColumn::make('rekoms.role.name')
-                    ->label('Divisi')
+                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('address')->searchable(),
 
             ])
             ->filters([

@@ -12,19 +12,19 @@ use App\Models\User;
 
 class BeladiriAccountService
 {
-        
-   public function __construct()
-   {
-       //
-   }
 
-   private $additionalPermissions = [
-   
-       [
-           'name' => 'rekoms.create',
-           'http_path' => '/admin/rekoms/create',
-       ],
-       [
+    public function __construct()
+    {
+        //
+    }
+
+    private $additionalPermissions = [
+        //Rekom Menu
+        [
+            'name' => 'rekoms.create',
+            'http_path' => '/admin/rekoms/create',
+        ],
+        [
             'name' => 'rekoms.update',
             'http_path' => '/admin/rekoms/*/edit',
         ],
@@ -36,61 +36,83 @@ class BeladiriAccountService
             'name' => 'rekoms.viewAny',
             'http_path' => '/admin/rekoms',
         ],
-       [
-           'name' => 'logout.*',
-           'http_path' => '/admin/logout',
-       ],
+        [
+            'name' => 'logout.*',
+            'http_path' => '/admin/logout',
+        ],
 
-       //Owner Menu
-    [
-        'name' => 'owners.*',
-        'http_path' => '/admin/owners*',
-    ],
-    [
-        'name' => 'owners.viewAny',
-        'http_path' => '/admin/owners',
-    ],
-    [
-        'name' => 'owners.view',
-        'http_path' => '/admin/owners/*',
-    ],
-    [
-        'name' => 'owners.create',
-        'http_path' => '/admin/owners/create',
-    ],
-    [
-         'name' => 'owners.update',
-         'http_path' => '/admin/owners/*/edit',
-     ],
-   ];
+        //Owner Menu
+        [
+            'name' => 'owners.*',
+            'http_path' => '/admin/owners*',
+        ],
+        [
+            'name' => 'owners.viewAny',
+            'http_path' => '/admin/owners',
+        ],
+        [
+            'name' => 'owners.view',
+            'http_path' => '/admin/owners/*',
+        ],
+        [
+            'name' => 'owners.create',
+            'http_path' => '/admin/owners/create',
+        ],
+        [
+            'name' => 'owners.update',
+            'http_path' => '/admin/owners/*/edit',
+        ],
 
-   private function createRole(): void
-   {
-       Role::firstOrCreate(['name' => RoleEnum::BELADIRI->value()]);
-   }
-   private function assignPermission(): void
-   {
-       foreach ($this->additionalPermissions as $permission) {
-           $permissionCreate = Permission::firstOrCreate([
-               'name' => $permission['name'],
-               'http_path' => $permission['http_path']
-           ]);
-           $permissionCreate->assignRole(RoleEnum::BELADIRI->value());
-       }
+        //Weapon Menu
+        [
+            'name' => 'weapons.*',
+            'http_path' => '/admin/weapons*',
+        ],
+        [
+            'name' => 'weapons.viewAny',
+            'http_path' => '/admin/weapons',
+        ],
+        [
+            'name' => 'weapons.view',
+            'http_path' => '/admin/weapons/*',
+        ],
+        [
+            'name' => 'weapons.create',
+            'http_path' => '/admin/weapons/create',
+        ],
+        [
+            'name' => 'weapons.update',
+            'http_path' => '/admin/weapons/*/edit',
+        ],
+    ];
 
-       Role::where('name', RoleEnum::BELADIRI->value())->first()->givePermissionTo(Permission::all());
-   }
-   public function initAccount(): void
-   {
-       $this->createRole();
-       $this->assignPermission();
+    private function createRole(): void
+    {
+        Role::firstOrCreate(['name' => RoleEnum::BELADIRI->value()]);
+    }
+    private function assignPermission(): void
+    {
+        foreach ($this->additionalPermissions as $permission) {
+            $permissionCreate = Permission::firstOrCreate([
+                'name' => $permission['name'],
+                'http_path' => $permission['http_path']
+            ]);
+            $permissionCreate->assignRole(RoleEnum::BELADIRI->value());
+        }
 
-       $user = User::firstOrCreate([
-           'name' => 'Beladiri',
-           'email' => 'beladiri@example.com',
-           'password' => bcrypt('password'),
-       ]);
+        Role::where('name', RoleEnum::BELADIRI->value())->first()->givePermissionTo(Permission::all());
+    }
+    public function initAccount(): void
+    {
+        $this->createRole();
+        $this->assignPermission();
 
-       $user->assignRole(RoleEnum::BELADIRI->value());
-   }
+        $user = User::firstOrCreate([
+            'name' => 'Beladiri',
+            'email' => 'beladiri@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $user->assignRole(RoleEnum::BELADIRI->value());
+    }
 }

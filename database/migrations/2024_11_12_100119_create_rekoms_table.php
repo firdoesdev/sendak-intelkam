@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('rekoms', function (Blueprint $table) {
             $table->id();
-            $table->string('no_rekom')->nullable();
+            $table->string('no_rekom')->nullable()->index();
             $table->date('activated_at')->nullable();
             $table->date('expired_at')->nullable();
             $table->enum('status', [

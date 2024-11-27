@@ -110,14 +110,12 @@ class RekomResource extends Resource
                         'info' => RekomStatusEnum::DRAFT->value(),
                     ])
                     ->label('Status'),
-                // Tables\Columns\TextColumn::make('owner.ownerType.name')
-                //     ->label('Tipe Pemilik'),
-
-
             ])
             ->filters([
                 //
             ])
+            ->defaultGroup('status')
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -131,7 +129,6 @@ class RekomResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //
             OwnerRelationManager::class,
         ];
     }
