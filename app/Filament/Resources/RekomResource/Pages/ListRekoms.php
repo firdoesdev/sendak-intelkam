@@ -9,11 +9,21 @@ use Filament\Resources\Pages\ListRecords;
 class ListRekoms extends ListRecords
 {
     protected static string $resource = RekomResource::class;
+    protected static ?string $title = 'Daftar Rekomendasi';
+
+    public function getBreadcrumbs(): array
+    {
+        return [
+            '/admin/rekoms' => 'Data Rekomendasi',
+            '' => 'List',
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            // Actions\CreateAction::make()
+            // ->label('Buat Baru'),
         ];
     }
 }

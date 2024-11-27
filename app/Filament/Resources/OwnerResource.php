@@ -45,7 +45,6 @@ class OwnerResource extends Resource
                 Fieldset::make('Data Kepemilikan')
                         ->columnSpan(8)
                         ->schema([
-
                             BelongsToSelect::make('ownerType')
                             ->label('Jenis Kepemilikan')
                             ->relationship('ownerType', 'name')
@@ -76,9 +75,6 @@ class OwnerResource extends Resource
                             ->required(),
                             
                         ]),
-
-
-
                     ]);
     }
 
@@ -88,6 +84,8 @@ class OwnerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('no_ktp')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('phone')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('address')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('rekoms.no_rekom')
                 ->label('No Rekom'),
                 Tables\Columns\TextColumn::make('rekoms.activated_at')
@@ -104,7 +102,8 @@ class OwnerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('Ubah'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

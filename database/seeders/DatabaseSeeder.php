@@ -59,19 +59,27 @@ class DatabaseSeeder extends Seeder
     {
         $menus = [
             [
-                'title' => 'Rekomendasi',
+                'title' => 'Management Rekomendasi',
                 'uri' => '/rekoms',
-                'icon' => 'heroicon-o-home',
-                'order' => 1,
-                'parent_id' => null,
-            ],
-            [
-                'title' => 'Owners',
-                'uri' => '/owners',
                 'icon' => 'heroicon-o-home',
                 'order' => 2,
                 'parent_id' => null,
             ],
+            [
+                'title' => 'Data Kepemilikan',
+                'uri' => '/owners',
+                'icon' => 'heroicon-o-home',
+                'order' => 1,
+                'parent_id' => 7,
+            ],
+            [
+                'title' => 'Data Rekomendasi',
+                'uri' => '/rekoms',
+                'icon' => 'heroicon-o-home',
+                'order' => 2,
+                'parent_id' => 7,
+            ],
+            
             
         ];
 

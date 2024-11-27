@@ -36,6 +36,7 @@ class OwnerRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('phone')
                 ->label('Nomor Telepon'),
                 Tables\Columns\TextColumn::make('weapons.serial')
+                ->label('Senjata')
                 ->badge()
                 
             ])
@@ -46,7 +47,7 @@ class OwnerRelationManager extends RelationManager
             //     Tables\Actions\CreateAction::make(),
             // ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

@@ -21,6 +21,7 @@ class RekomsRelationManager extends RelationManager
 {
 
     protected static string $relationship = 'rekoms';
+    protected static ?string $title = 'Rekom';
 
     public function form(Form $form): Form
     {
@@ -87,11 +88,15 @@ class RekomsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                ->label('Buat Rekom'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                
+                Tables\Actions\EditAction::make()
+                ->label('Ubah'),
+                Tables\Actions\DeleteAction::make()
+                ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

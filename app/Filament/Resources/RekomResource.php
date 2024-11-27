@@ -28,6 +28,7 @@ use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
 
 use App\Services\RekomServices\CommonRekomService;
 use Str;
+use Illuminate\Contracts\Support\Htmlable;
 
 class RekomResource extends Resource
 {
@@ -35,12 +36,11 @@ class RekomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static bool $shouldSkipAuthorization = true;
-
     public static function getEloquentQuery(): Builder
     {
         // $rekoms = new CommonRekomService();
         // return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
+
         
         return parent::getEloquentQuery();
     }
@@ -49,23 +49,34 @@ class RekomResource extends Resource
     {
         return $form->schema([
             Fieldset::make('Detail Rekom')
-            ->schema([
-                TextInput::make('no_rekom'),
-                Select::make('status')
-                ->options([
-                    RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
-                    RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
-                    RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
-                    RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label()
-                ]),
-                DatePicker::make('activated_at')
-                ->label('Tgl Rekom Terbit'),
-                DatePicker::make('expired_at')
-                ->label('Tgl Kadaluarsa'),
-            ])
+                ->schema([
+                    TextInput::make('no_rekom')
+                        ->required()
+                        ->validationMessages([
+                            'required' => 'No. Rekom Harus Diisi',
+                        ]),
+                    Select::make('status')
+                        ->options([
+                            RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
+                            RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
+                            RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
+                            RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label()
+                        ])
+                        ->required(),
+                    DatePicker::make('activated_at')
+                        ->label('Tgl Rekom Terbit')
+                        ->before('expired_at')
+                        ->validationMessages([
+                            'before' => 'Tgl Rekom Terbit Harus Sebelum Tgl Rekom Kadaluarsa',
+                        ])
+                        ->required(),
+                    DatePicker::make('expired_at')
+                        ->label('Tgl Kadaluarsa')
+                        ->required(),
+                ])
         ]);
 
-        
+
 
     }
 
@@ -74,7 +85,10 @@ class RekomResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('no_rekom')->label('No Rekom')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('no_rekom')->label('No Rekom')
+                    ->default('-')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('activated_at')
                     ->label('Tgl Rekom Terbit')
                     ->date(),
@@ -82,19 +96,22 @@ class RekomResource extends Resource
                     ->label('Tgl Rekom Kadaluarsa')
                     ->date(),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'expired',
-                        'warning' => 'draft'
-                    ])
+                    ->formatStateUsing(fn(string $state): string => RekomStatusEnum::from($state)->label())
                     ->icons([
-                        'heroicon-s-check-circle' => 'active',
-                        'heroicon-s-x-circle' => 'expired',
-                        'heroicon-s-question-mark-circle' => 'draft',
+                        'heroicon-s-check-circle' => RekomStatusEnum::ACTIVE->value(),
+                        'heroicon-s-x-circle' => RekomStatusEnum::EXPIRED->value(),
+                        'heroicon-s-exclamation-triangle' => RekomStatusEnum::EXPIRED_SOON->value(),
+                        'heroicon-s-question-mark-circle' => RekomStatusEnum::DRAFT->value(),
+                    ])
+                    ->colors([
+                        'success' => RekomStatusEnum::ACTIVE->value(),
+                        'danger' => RekomStatusEnum::EXPIRED->value(),
+                        'warning' => RekomStatusEnum::EXPIRED_SOON->value(),
+                        'info' => RekomStatusEnum::DRAFT->value(),
                     ])
                     ->label('Status'),
-                Tables\Columns\TextColumn::make('owner.ownerType.name')
-                ->label('Tipe Pemilik'),
+                // Tables\Columns\TextColumn::make('owner.ownerType.name')
+                //     ->label('Tipe Pemilik'),
 
 
             ])
@@ -114,7 +131,7 @@ class RekomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+                //
             OwnerRelationManager::class,
         ];
     }
