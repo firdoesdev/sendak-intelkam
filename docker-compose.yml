@@ -1,12 +1,11 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.3'
+            context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        # image: 'sail-8.3/app'
-        image: php:8.3-fpm
+        image: sail-8.3/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -26,7 +25,7 @@ services:
             - mysql
             - redis
     mysql:
-        image: 'mysql/mysql-server:8.0'
+        image: 'mysql:9.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
@@ -39,7 +38,6 @@ services:
         volumes:
             - 'sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
-            - 'mysql-socket:/var/run/mysqld'
         networks:
             - sail
         healthcheck:
