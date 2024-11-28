@@ -61,6 +61,9 @@ class WeaponResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+        // $owners = Weapon::with('owners')->first()['owners']->pivot->jsonSerialize();
+        // dd($owners);
         return $table
             ->columns([
                 //
@@ -71,6 +74,7 @@ class WeaponResource extends Resource
                 Tables\Columns\TextColumn::make('warehouse.name')
                 ->searchable()
                 ->label('Lokasi Gudang'),
+                
             ])
             ->filters([
                 //

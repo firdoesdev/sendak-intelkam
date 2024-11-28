@@ -16,4 +16,12 @@ class EditWeapon extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction()->label('Simpan'),
+            $this->getCancelFormAction()->label('Batal'),
+        ];
+    }
 }

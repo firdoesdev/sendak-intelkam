@@ -66,7 +66,8 @@ class WeaponsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                ->label('Tambah Senjata'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

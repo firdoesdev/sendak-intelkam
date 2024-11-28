@@ -30,16 +30,19 @@ class OwnersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                // Tables\Columns\TextColumn::make('weapons.*.pivot'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('edit')
+                ->icon('heroicon-s-pencil-square')
+                ->label('Edit')
+                ->url(fn($record)=> route('filament.admin.resources.owners.edit',['record' => $record->owner_id])), 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
