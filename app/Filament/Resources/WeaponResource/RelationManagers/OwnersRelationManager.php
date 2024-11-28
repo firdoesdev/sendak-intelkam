@@ -30,7 +30,7 @@ class OwnersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                // Tables\Columns\TextColumn::make('weapons.*.pivot'),
+                Tables\Columns\TextColumn::make('status'),
             ])
             ->filters([
                 //
