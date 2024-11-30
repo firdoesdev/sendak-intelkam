@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
+use App\Models\OwnerWeapon;
+use App\Models\Owner;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -14,6 +17,7 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Get;
 
 class WeaponsRelationManager extends RelationManager
 {
@@ -67,6 +71,7 @@ class WeaponsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('caliber')->label('Kaliber'),
                 Tables\Columns\TextColumn::make('warehouse.name')->label('Gudang'),
                 Tables\Columns\TextColumn::make('status')->label('Status'),
+                Tables\Columns\TextColumn::make('description')->label('Keterangan'),
             ])
             ->filters([
                 //
@@ -78,12 +83,26 @@ class WeaponsRelationManager extends RelationManager
                 ->label('Pilih Senjata')
                 ->form(fn(AttachAction $action) => [
                     $action->getRecordSelect()->label('Nomor Seri'),
-                    
+                    TextInput::make('description')->label('Keterangan')->required(),
+                    Select::make('description')->label('Status')->options([
+                        'Hibah' => 'Hibah',
+                    ])->live(),
+                    Select::make('previous_owner_id')
+                    ->label('Pemilik Senjata')
+                    ->options(Owner::all()->pluck('name', 'id'))
+                    ->visible(fn(Get $get) => $get('description')),  
                 ])
+                /* TODO after attach
+                 - for default set status `active` when attaced
+                 - set all previous ownership status to 'inactive'
+
+                */
+                
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
+                ->label('Hapus Senjata')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
