@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
                 'uri' => '/rekoms',
                 'icon' => 'heroicon-o-home',
                 'order' => 2,
-                'parent_id' => null,
+                'parent_id' => -1,
             ],
             [
                 'title' => 'Data Kepemilikan',
@@ -86,7 +86,45 @@ class DatabaseSeeder extends Seeder
                 'order' => 3,
                 'parent_id' => 7,
             ],
-            
+
+            [
+                'title' => 'Master Data',
+                'uri' => '/master-data',
+                'icon' => 'heroicon-o-home',
+                'order' => 3,
+                'parent_id' => -1,
+            ], 
+
+            [
+                'title' => 'Jenis Senjata',
+                'uri' => '/master-data/weapon-types',
+                'icon' => 'heroicon-o-home',
+                'order' => 2,
+                'parent_id' => 11,
+            ], 
+            [
+                'title' => 'Lokasi Gudang',
+                'uri' => '/master-data/warehouses',
+                'icon' => 'heroicon-o-home',
+                'order' => 3,
+                'parent_id' => 11,
+            ], 
+            [
+                'title' => 'Rekom Type',
+                'uri' => '/master-data/rekom-types',
+                'icon' => 'heroicon-o-home',
+                'order' => 1,
+                'parent_id' => 11,
+            ], 
+
+            [
+                'title' => 'Jenis Peluru',
+                'uri' => '/master-data/bullet-types',
+                'icon' => 'heroicon-o-home',
+                'order' => 4,
+                'parent_id' => 11,
+            ], 
+
             
         ];
 

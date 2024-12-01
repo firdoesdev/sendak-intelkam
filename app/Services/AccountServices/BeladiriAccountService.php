@@ -63,7 +63,7 @@ class BeladiriAccountService
             'http_path' => '/admin/owners/*/edit',
         ],
 
-        //Weapon Menu
+        // //Weapon Menu
         [
             'name' => 'weapons.*',
             'http_path' => '/admin/weapons*',
@@ -83,6 +83,28 @@ class BeladiriAccountService
         [
             'name' => 'weapons.update',
             'http_path' => '/admin/weapons/*/edit',
+        ],
+
+        //Weapon Type Menu
+        [
+            'name' => 'weaponsTypes.*',
+            'http_path' => '/admin/master-data/weapon-types*',
+        ],
+         [
+            'name' => 'weaponstype.viewAny',
+             'http_path' => '/admin/master-data/weapon-types',
+         ],
+        [
+            'name' => 'weaponsTypes.view',
+            'http_path' => '/admin/master-data/weapon-types/*',
+        ],
+        [
+            'name' => 'weaponsTypes.create',
+            'http_path' => '/admin/master-data/weapon-types/create',
+        ],
+        [
+            'name' => 'weaponsTypes.update',
+            'http_path' => '/admin/master-data/weapon-types/*/edit',
         ],
     ];
 
@@ -113,6 +135,6 @@ class BeladiriAccountService
             'password' => bcrypt('password'),
         ]);
 
-        $user->assignRole(RoleEnum::BELADIRI->value());
+        // $user->assignRole(RoleEnum::BELADIRI->value());
     }
 }
