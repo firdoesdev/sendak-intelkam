@@ -94,7 +94,7 @@ class OwnerResource extends Resource
                         ]),
                         Tab::make('Dokumen Kepemilikan')->schema([
                             Grid::make(3)->schema([
-                                FileUpload::make('ktp')
+                                FileUpload::make('ktp_attachment')
                                     ->label('KTP'),
                                 FileUpload::make('npwp')
                                     ->label('NPWP'),

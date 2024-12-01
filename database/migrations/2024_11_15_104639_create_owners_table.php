@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string(column: 'job')->nullable();
+            $table->string('ktp_attachment')->nullable();
             $table->foreignIdFor(model: OwnerType::class)->nullable();
             $table->timestamps();
         });

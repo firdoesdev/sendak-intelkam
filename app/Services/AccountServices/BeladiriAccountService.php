@@ -150,6 +150,29 @@ class BeladiriAccountService
             'name' => 'bulletTypes.update',
             'http_path' => '/admin/master-data/bullet-types/*/edit',
         ],
+
+        //Rekom Type
+           
+        [
+            'name' => 'rekomTypes.*',
+            'http_path' => '/admin/master-data/rekom-types*',
+        ],
+         [
+            'name' => 'rekomTypes.viewAny',
+             'http_path' => '/admin/master-data/rekom-types',
+         ],
+        [
+            'name' => 'rekomTypes.view',
+            'http_path' => '/admin/master-data/rekom-types/*',
+        ],
+        [
+            'name' => 'rekomTypes.create',
+            'http_path' => '/admin/master-data/rekom-types/create',
+        ],
+        [
+            'name' => 'rekomTypes.update',
+            'http_path' => '/admin/master-data/rekom-types/*/edit',
+        ],
     ];
 
     private function createRole(): void

@@ -10,6 +10,8 @@ class RekomType extends Model
     /** @use HasFactory<\Database\Factories\RekomTypeFactory> */
     use HasFactory;
 
+    protected $fillable = ['name', 'duration_in_month'];
+
     public function rekoms()
     {
         return $this->hasMany(Rekom::class);
