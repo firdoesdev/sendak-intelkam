@@ -31,6 +31,7 @@ class OwnersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('assigned_at'),
             ])
             ->filters([
                 //

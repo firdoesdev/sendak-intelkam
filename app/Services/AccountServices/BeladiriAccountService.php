@@ -63,7 +63,7 @@ class BeladiriAccountService
             'http_path' => '/admin/owners/*/edit',
         ],
 
-        //Weapon Menu
+        // //Weapon Menu
         [
             'name' => 'weapons.*',
             'http_path' => '/admin/weapons*',
@@ -84,6 +84,72 @@ class BeladiriAccountService
             'name' => 'weapons.update',
             'http_path' => '/admin/weapons/*/edit',
         ],
+
+        //Weapon Type Menu
+        [
+            'name' => 'weaponsTypes.*',
+            'http_path' => '/admin/master-data/weapon-types*',
+        ],
+         [
+            'name' => 'weaponsTypes.viewAny',
+             'http_path' => '/admin/master-data/weapon-types',
+         ],
+        [
+            'name' => 'weaponsTypes.view',
+            'http_path' => '/admin/master-data/weapon-types/*',
+        ],
+        [
+            'name' => 'weaponsTypes.create',
+            'http_path' => '/admin/master-data/weapon-types/create',
+        ],
+        [
+            'name' => 'weaponsTypes.update',
+            'http_path' => '/admin/master-data/weapon-types/*/edit',
+        ],
+
+        //Gudang
+        [
+            'name' => 'warehouses.*',
+            'http_path' => '/admin/master-data/warehouses*',
+        ],
+         [
+            'name' => 'warehouses.viewAny',
+             'http_path' => '/admin/master-data/warehouses',
+         ],
+        [
+            'name' => 'warehouses.view',
+            'http_path' => '/admin/master-data/warehouses/*',
+        ],
+        [
+            'name' => 'warehouses.create',
+            'http_path' => '/admin/master-data/warehouses/create',
+        ],
+        [
+            'name' => 'warehouses.update',
+            'http_path' => '/admin/master-data/warehouses/*/edit',
+        ],
+
+        //Jenis Peluru
+        [
+            'name' => 'bulletTypes.*',
+            'http_path' => '/admin/master-data/bullet-types*',
+        ],
+         [
+            'name' => 'bulletTypes.viewAny',
+             'http_path' => '/admin/master-data/bullet-types',
+         ],
+        [
+            'name' => 'bulletTypes.view',
+            'http_path' => '/admin/master-data/bullet-types/*',
+        ],
+        [
+            'name' => 'bulletTypes.create',
+            'http_path' => '/admin/master-data/bullet-types/create',
+        ],
+        [
+            'name' => 'bulletTypes.update',
+            'http_path' => '/admin/master-data/bullet-types/*/edit',
+        ],
     ];
 
     private function createRole(): void
@@ -100,7 +166,10 @@ class BeladiriAccountService
             $permissionCreate->assignRole(RoleEnum::BELADIRI->value());
         }
 
-        Role::where('name', RoleEnum::BELADIRI->value())->first()->givePermissionTo(Permission::all());
+        // Assign All Permission if environment is `local`
+        if(app()->environment('local')){
+            Role::where('name', RoleEnum::BELADIRI->value())->first()->givePermissionTo(Permission::all());
+        }
     }
     public function initAccount(): void
     {
@@ -114,5 +183,7 @@ class BeladiriAccountService
         ]);
 
         $user->assignRole(RoleEnum::BELADIRI->value());
+
+     
     }
 }

@@ -23,7 +23,7 @@ class Weapon extends Model
 
     public function owners(){
         return $this->belongsToMany(Owner::class,'owner_weapons')
-        ->withPivot('status','description');
+        ->withPivot('status','description','assigned_at','previous_owner_id');
     }
 
     public function weaponType(){

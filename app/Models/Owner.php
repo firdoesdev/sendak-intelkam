@@ -47,7 +47,9 @@ class Owner extends Model
     {
         return $this->belongsToMany(Weapon::class, 'owner_weapons')->withPivot(
             'status',
-            'description'
+            'description',
+            'assigned_at',
+            'previous_owner_id'
         );
     }
 

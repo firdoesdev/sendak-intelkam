@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use SolutionForest\FilamentAccessManagement\Models\Menu;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,6 +15,8 @@ use App\Services\AccountServices\HandakAccountService;
 use App\Services\AccountServices\PolsusAccountService;
 use App\Services\AccountServices\BeladiriAccountService;
 use App\Services\AccountServices\OlahragaAccountService;
+
+use Illuminate\Support\Facades\App;
 
 
 
@@ -37,12 +39,15 @@ class DatabaseSeeder extends Seeder
     {
         // Call Artisan Command for Filament User Permission for access menu Role & Permission
         Artisan::call('filament-access-management:install');
+        
 
         $this->call([
             WarehouseSeeder::class,
             BulletTypeSeeder::class,
             WeaponTypeSeeder::class,
             OwnerTypeSeeder::class,
+            
+            
         ]);
 
         
@@ -51,56 +56,12 @@ class DatabaseSeeder extends Seeder
         $this->olahragaAccountService->initAccount();
         $this->beladiriAccountService->initAccount();
 
-        $this->createMenu();
-
+        $this->call([
+            MenuSeeder::class
+        ]);
+        
     }
 
-    private function createMenu():void
-    {
-        $menus = [
-            [
-                'title' => 'Management Rekomendasi',
-                'uri' => '/rekoms',
-                'icon' => 'heroicon-o-home',
-                'order' => 2,
-                'parent_id' => null,
-            ],
-            [
-                'title' => 'Data Kepemilikan',
-                'uri' => '/owners',
-                'icon' => 'heroicon-o-home',
-                'order' => 1,
-                'parent_id' => 7,
-            ],
-            [
-                'title' => 'Data Rekomendasi',
-                'uri' => '/rekoms',
-                'icon' => 'heroicon-o-home',
-                'order' => 2,
-                'parent_id' => 7,
-            ],
-            [
-                'title' => 'Data Senjata',
-                'uri' => '/weapons',
-                'icon' => 'heroicon-o-home',
-                'order' => 3,
-                'parent_id' => 7,
-            ],
-            
-            
-        ];
-
-        foreach ($menus as $menu) {
-            Menu::create([
-                'title' => $menu['title'],
-                'uri' => $menu['uri'],
-                'icon' => $menu['icon'],
-                'order' => $menu['order'],
-                'parent_id' => $menu['parent_id'],
-                'is_filament_panel'=>true
-            ]);
-        }
-    }
 
 
   
