@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('duration_in_month')->default(0);
-            $table->boolean('can_be_renewed')->default(false);
             $table->timestamps();
         });
     }

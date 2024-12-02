@@ -3,7 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Enums\OwnerTypeEnum;
+use App\Enums\RoleEnum;
 use App\Filament\Resources\OwnerResource\Pages;
+use App\Filament\Resources\OwnerResource\RelationManagers\AttachmentRelationManager;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
 use App\Models\OwnerType;
@@ -23,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 use App\Services\RekomServices\CommonRekomService;
+use Storage;
 
 class OwnerResource extends Resource
 {
@@ -50,61 +53,61 @@ class OwnerResource extends Resource
 
         return $form
             ->schema([
-                Tabs::make('Tabs')
+                Fieldset::make('Informasi Pribadi')
+                ->schema([
+                    BelongsToSelect::make('ownerType')
+                    ->label('Jenis Kepemilikan')
+                    ->relationship('ownerType', 'name')
+                    ->default($defaultOwnerTypeId)
+                    ->disabled()
+                    ->required()
+                    ->hidden(),
+
+                TextInput::make('name')
+                    ->placeholder('ex: John Doe')
+                    ->required(),
+
+                TextInput::make('no_ktp')
+                    ->label('Nomor KTP')
+                    ->numeric()
+                    ->placeholder('ex: 9999999999999999')
+                    ->required(),
+
+                TextInput::make('address')
+                    ->label('Alamat')
+                    ->placeholder('ex: Jalan Raya No. 1')
+                    ->required(),
+
+                TextInput::make('phone')
+                    ->label('Nomor Telepon')
+                    ->placeholder('ex: 08123456789')
+                    ->numeric()
+                    ->required(),
+                TextInput::make('job')
+                    ->label('Pekerjaan')
+                    ->placeholder('ex: Pegawai Swasta')
+                    ->required(),
+                ]),
+
+                Tabs::make('attachment')
+                    ->visible(auth()->user()->hasRole(RoleEnum::BELADIRI->value()))
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Data Kepemilikan')->schema([
-                            Grid::make()->schema([
-                                BelongsToSelect::make('ownerType')
-                                    ->label('Jenis Kepemilikan')
-                                    ->relationship('ownerType', 'name')
-                                    ->default($defaultOwnerTypeId)
-                                    ->disabled()
-                                    ->required()
-                                    ->hidden(),
-
-                                TextInput::make('name')
-                                    ->placeholder('ex: John Doe')
-                                    ->required(),
-
-                                TextInput::make('no_ktp')
-                                    ->label('Nomor KTP')
-                                    ->numeric()
-                                    ->placeholder('ex: 9999999999999999')
-                                    ->required(),
-
-                                TextInput::make('address')
-                                    ->label('Alamat')
-                                    ->placeholder('ex: Jalan Raya No. 1')
-                                    ->required(),
-
-                                TextInput::make('phone')
-                                    ->label('Nomor Telepon')
-                                    ->placeholder('ex: 08123456789')
-                                    ->numeric()
-                                    ->required(),
-                                TextInput::make('job')
-                                    ->label('Pekerjaan')
-                                    ->placeholder('ex: Pegawai Swasta')
-                                    ->required(),
-
-                            ]),
-
-
-                        ]),
-                        Tab::make('Dokumen Kepemilikan')->schema([
+                        
+                        Tab::make('Dokumen Kepemilikan')
+                        ->schema([
                             Grid::make(3)->schema([
-                                FileUpload::make('ktp')
+                                FileUpload::make('file_ktp')
                                     ->label('KTP'),
-                                FileUpload::make('npwp')
+                                FileUpload::make('file_npwp')
                                     ->label('NPWP'),
-                                FileUpload::make('ksk')
+                                FileUpload::make('file_ksk')
                                     ->label('KSK'),
-                                FileUpload::make('skep_jabatan')
+                                FileUpload::make('file_skep_jabatan')
                                     ->label('Skep Jabatan'),
-                                FileUpload::make('kta')
+                                FileUpload::make('file_kta')
                                     ->label('KTA'),
-                                FileUpload::make('si_impor')
+                                FileUpload::make('file_surat_ijin_impor')
                                     ->label('Surat Ijin Impor')
 
                             ]),
@@ -113,11 +116,11 @@ class OwnerResource extends Resource
                         Tab::make('Dokumen Hasil Tes')
                             ->schema([
                                 Grid::make(3)->schema([
-                                    FileUpload::make('health_certificate')
+                                    FileUpload::make('file_tes_kesehatan')
                                         ->label('Hasil Tes Kesehatan'),
-                                    FileUpload::make('psychological_certificate')
+                                    FileUpload::make('file_tes_psikologi')
                                         ->label('Hasil Tes Psikologi'),
-                                    FileUpload::make('shooting_certificate')
+                                    FileUpload::make('file_tes_menembak')
                                         ->label('Hasil Tes Menembak'),
 
 
@@ -160,6 +163,7 @@ class OwnerResource extends Resource
                 //
             RekomsRelationManager::class,
             WeaponsRelationManager::class,
+            // AttachmentRelationManager::class
 
         ];
     }

@@ -35,6 +35,9 @@ class RekomTypeResource extends Resource
         return $table
             ->columns([
                 //
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('duration_in_month')
+                ->formatStateUsing(fn(string $state): string => $state . ' Bulan'),
             ])
             ->filters([
                 //

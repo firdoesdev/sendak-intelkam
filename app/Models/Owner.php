@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Services\RekomServices\CommonRekomService;
 use App\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use App\Observers\OwnerObserver;
 
+#[ObservedBy([OwnerObserver::class])]
 class Owner extends Model
 {
     /** @use HasFactory<\Database\Factories\OwnerFactory> */
@@ -22,7 +25,16 @@ class Owner extends Model
         'no_ktp',
         'address',
         'phone',
-        'job'
+        'job',
+        'file_ktp',
+        'file_npwp',
+        'file_ksk',
+        'file_skep_jabatan',
+        'file_kta',
+        'file_surat_ijin_impor',
+        'file_tes_kesehatan',
+        'file_tes_psikologi',
+        'file_tes_menembak',
     ];
 
     //TODO Create Default Owner Type 
@@ -37,6 +49,10 @@ class Owner extends Model
             }
         });
     }
+
+    // protected $casts = [
+    //     'ktp_attachment' => 'array',
+    // ];
 
     public function ownerType()
     {
