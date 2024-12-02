@@ -21,13 +21,8 @@ class OwnerObserver
      */
     public function updated(Owner $owner): void
     {
-        //
-        $storageEnv = env('FILESYSTEM_DISK','local');
-        if($owner->isDirty('ktp_attachment')) {
-            // dump($owner->getOriginal('ktp_attachment'));
-            // Storage::disk($storageEnv)->delete($owner->getOriginal('ktp_attachment'));
-            Storage::delete($owner->getOriginal('ktp_attachment'));
-            
+        if($owner->isDirty('ktp_attachment') && ! is_null($owner->getOriginal('ktp_attachment'))){ 
+            Storage::disk('public')->delete($owner->getOriginal('ktp_attachment'));
         }
     }
 
@@ -36,11 +31,8 @@ class OwnerObserver
      */
     public function deleted(Owner $owner): void
     {
-        //
-        $storageEnv = env('FILESYSTEM_DISK','local');
-
         if (! is_null($owner->ktp_attachment)) {
-            Storage::disk($storageEnv)->delete($owner->ktp_attachment);
+            Storage::disk('public')->delete($owner->ktp_attachment);
         }
     }
 
