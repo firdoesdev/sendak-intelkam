@@ -26,7 +26,15 @@ class Owner extends Model
         'address',
         'phone',
         'job',
-        'ktp_attachment'
+        'file_ktp',
+        'file_npwp',
+        'file_ksk',
+        'file_skep_jabatan',
+        'file_kta',
+        'file_surat_ijin_impor',
+        'file_tes_kesehatan',
+        'file_tes_psikologi',
+        'file_tes_menembak',
     ];
 
     //TODO Create Default Owner Type 
