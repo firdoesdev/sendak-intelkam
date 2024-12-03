@@ -9,7 +9,8 @@
         "filament/filament": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "solution-forest/filament-access-management": "^2.2"
+        "solution-forest/filament-access-management": "^2.2",
+        "tomatophp/filament-docs": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

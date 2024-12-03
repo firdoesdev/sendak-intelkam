@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 class RekomTypeResource extends Resource
 {
@@ -27,6 +29,10 @@ class RekomTypeResource extends Resource
         return $form
             ->schema([
                 //
+                DocumentAction::make()
+                ->vars(fn($record)=>[
+                    DocsVar::make('$name')->value($record->name),
+                ])
             ]);
     }
 
