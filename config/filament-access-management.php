@@ -32,7 +32,7 @@ return [
             /**
              * Using db based filament navigation if true.
              */
-            'enabled' => true,
+            'enabled' => false,
             /**
              * Table name db based filament navigation.
              */

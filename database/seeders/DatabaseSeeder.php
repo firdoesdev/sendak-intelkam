@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Call Artisan Command for Filament User Permission for access menu Role & Permission
+        Artisan::call('filament-docs:install');
         Artisan::call('filament-access-management:install');
         
 
