@@ -26,13 +26,19 @@ class RekomTypeResource extends Resource
 
     public static function form(Form $form): Form
     {
+
+         
+        
         return $form
             ->schema([
                 //
-                DocumentAction::make()
-                ->vars(fn($record)=>[
-                    DocsVar::make('$name')->value($record->name),
-                ])
+                // DocumentAction::make()
+                // ->vars(fn($record)=>[
+                //     DocsVar::make('$name')->value($record->name),
+                // ])
+                // DocumentAction::make()->vars(fn($record) => [
+                //     DocsVar::make('$name')->value($record->name),
+                // ])
             ]);
     }
 
@@ -50,6 +56,10 @@ class RekomTypeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DocumentAction::make()->vars(fn($record) => [
+                    DocsVar::make('$name')->value($record->name),
+                    DocsVar::make('$duration_in_month')->value($record->duration_in_month),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

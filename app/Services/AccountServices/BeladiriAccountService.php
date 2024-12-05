@@ -175,26 +175,48 @@ class BeladiriAccountService
         ],
 
         //Documents
-        // [
-        //     'name' => 'documents.*',
-        //     'http_path' => '/admin/documents*',
-        // ],
-        //  [
-        //     'name' => 'documents.viewAny',
-        //      'http_path' => '/admin/documents',
-        //  ],
-        // [
-        //     'name' => 'documents.view',
-        //     'http_path' => '/admin/documents/*',
-        // ],
-        // [
-        //     'name' => 'documents.create',
-        //     'http_path' => '/admin/documents/create',
-        // ],
-        // [
-        //     'name' => 'documents.update',
-        //     'http_path' => '/admin/documents/*/edit',
-        // ],
+        [
+            'name' => 'documents.*',
+            'http_path' => '/admin/documents*',
+        ],
+         [
+            'name' => 'documents.viewAny',
+             'http_path' => '/admin/documents',
+         ],
+        [
+            'name' => 'documents.view',
+            'http_path' => '/admin/documents/*',
+        ],
+        [
+            'name' => 'documents.create',
+            'http_path' => '/admin/documents/create',
+        ],
+        [
+            'name' => 'documents.update',
+            'http_path' => '/admin/documents/*/edit',
+        ],
+
+        //Documents Templates
+        [
+            'name' => 'document-templates.*',
+            'http_path' => '/admin/document-templates*',
+        ],
+         [
+            'name' => 'document-templates.viewAny',
+             'http_path' => '/admin/document-templates',
+         ],
+        [
+            'name' => 'document-templates.view',
+            'http_path' => '/admin/document-templates/*',
+        ],
+        [
+            'name' => 'document-templates.create',
+            'http_path' => '/admin/document-templates/create',
+        ],
+        [
+            'name' => 'document-templates.update',
+            'http_path' => '/admin/document-templates/*/edit',
+        ],
     ];
 
     private function createRole(): void
