@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\OwnerType;
 use App\Models\Weapon;
 use App\Models\Rekom;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Services\RekomServices\CommonRekomService;
 use App\Enums\RoleEnum;
@@ -35,6 +37,7 @@ class Owner extends Model
         'file_tes_kesehatan',
         'file_tes_psikologi',
         'file_tes_menembak',
+        'parent_id',
     ];
 
     //TODO Create Default Owner Type 
@@ -44,15 +47,13 @@ class Owner extends Model
 
         static::creating(function ($model) {
             $rekom = new CommonRekomService();
+
+            // Set default Owner Type except polsus
             if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
                 $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
             }
         });
     }
-
-    // protected $casts = [
-    //     'ktp_attachment' => 'array',
-    // ];
 
     public function ownerType()
     {
@@ -72,5 +73,15 @@ class Owner extends Model
     public function rekoms(): HasMany
     {
         return $this->hasMany(Rekom::class);
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(self::class,'parent_id');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class,'parent_id');
     }
 }

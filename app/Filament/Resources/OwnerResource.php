@@ -25,7 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 use App\Services\RekomServices\CommonRekomService;
-use Storage;
+use Filament\Forms\Get;
 
 class OwnerResource extends Resource
 {
@@ -48,8 +48,11 @@ class OwnerResource extends Resource
 
     public static function form(Form $form): Form
     {
+        
 
         $defaultOwnerTypeId = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first()->id;
+
+        $hasPolsus = auth()->user()->hasRole(RoleEnum::POLSUS->value());
 
         return $form
             ->schema([
@@ -59,9 +62,9 @@ class OwnerResource extends Resource
                     ->label('Jenis Kepemilikan')
                     ->relationship('ownerType', 'name')
                     ->default($defaultOwnerTypeId)
-                    ->disabled()
+                    ->disabled(!$hasPolsus)
                     ->required()
-                    ->hidden(),
+                    ->hidden(!$hasPolsus),
 
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')

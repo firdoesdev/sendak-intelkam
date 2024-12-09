@@ -29,6 +29,8 @@ use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
 use App\Services\RekomServices\CommonRekomService;
 use Str;
 use Illuminate\Contracts\Support\Htmlable;
+use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 class RekomResource extends Resource
 {
@@ -38,6 +40,7 @@ class RekomResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        //TODO Filter by role id
         // $rekoms = new CommonRekomService();
         // return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
 
@@ -118,6 +121,10 @@ class RekomResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DocumentAction::make()->vars(fn($record) => [
+                    DocsVar::make('$name')->value($record->name),
+                    DocsVar::make('$duration_in_month')->value($record->duration_in_month),
+                ])->model('App\Models\Rekom')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use App\Services\RekomServices\CommonRekomService;
 
+use TomatoPHP\FilamentDocs\Facades\FilamentDocs;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
+
 class Rekom extends Model
 {
     /** @use HasFactory<\Database\Factories\RekomFactory> */
@@ -40,6 +43,13 @@ class Rekom extends Model
             
         });
 
+        FilamentDocs::register([
+            DocsVar::make('$OWNER_NAME')
+                ->label('Owner')
+                ->model(Owner::class)
+                ->column('Pemilik'),
+           
+        ]);
         
     }
 
