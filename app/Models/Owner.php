@@ -38,22 +38,23 @@ class Owner extends Model
         'file_tes_psikologi',
         'file_tes_menembak',
         'parent_id',
+        'owner_type_id'
     ];
 
-    //TODO Create Default Owner Type 
-    protected static function boot()
-    {
-        parent::boot();
+    // //TODO Create Default Owner Type 
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $rekom = new CommonRekomService();
+    //     static::creating(function ($model) {
+    //         $rekom = new CommonRekomService();
 
-            // Set default Owner Type except polsus
-            if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
-                $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
-            }
-        });
-    }
+    //         // Set default Owner Type except polsus
+    //         if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
+    //             $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
+    //         }
+    //     });
+    // }
 
     public function ownerType()
     {
@@ -75,12 +76,12 @@ class Owner extends Model
         return $this->hasMany(Rekom::class);
     }
 
-    public function children(): HasMany
+    public function members(): HasMany
     {
         return $this->hasMany(self::class,'parent_id');
     }
 
-    public function parent(): BelongsTo
+    public function company(): BelongsTo
     {
         return $this->belongsTo(self::class,'parent_id');
     }

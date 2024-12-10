@@ -39,7 +39,8 @@ class Rekom extends Model
         static::creating(function ($model) {
             $rekom = new CommonRekomService();
            
-            $model->role_id = $rekom->getRekomRoleId();   // Set Rekom Division berdasarkan user login
+            // Set Rekom Division berdasarkan user login
+            $model->role_id = $rekom->getRekomRoleId();   
             
         });
 

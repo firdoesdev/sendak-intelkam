@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\OwnerTypeEnum;
 use App\Enums\RoleEnum;
 use App\Filament\Resources\OwnerResource\Pages;
-use App\Filament\Resources\OwnerResource\RelationManagers\AttachmentRelationManager;
+use App\Filament\Resources\OwnerResource\RelationManagers\MembersRelationManager;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
 use App\Models\OwnerType;
@@ -62,9 +62,12 @@ class OwnerResource extends Resource
                     ->label('Jenis Kepemilikan')
                     ->relationship('ownerType', 'name')
                     ->default($defaultOwnerTypeId)
-                    ->disabled(!$hasPolsus)
+                    ->disabled()
                     ->required()
-                    ->hidden(!$hasPolsus),
+                    ->hidden(),
+                    // ->disabled(!$hasPolsus)
+                    // ->required()
+                    // ->hidden(!$hasPolsus),
 
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')
@@ -141,6 +144,7 @@ class OwnerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('no_ktp')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('ownerType')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('address')->searchable(),
 
@@ -166,6 +170,8 @@ class OwnerResource extends Resource
                 //
             RekomsRelationManager::class,
             WeaponsRelationManager::class,
+            MembersRelationManager::class
+            
             // AttachmentRelationManager::class
 
         ];
