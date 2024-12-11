@@ -25,6 +25,7 @@ class Owner extends Model
     protected $fillable = [
         'name',
         'no_ktp',
+        'gender',
         'address',
         'phone',
         'job',

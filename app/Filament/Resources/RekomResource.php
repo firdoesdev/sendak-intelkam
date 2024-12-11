@@ -11,7 +11,6 @@ use App\Models\Rekom;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -20,17 +19,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
-
-use App\Services\RekomServices\CommonRekomService;
-use Str;
-use Illuminate\Contracts\Support\Htmlable;
 use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
 use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
+
+use App\Services\RekomServices\CommonRekomService;
 
 class RekomResource extends Resource
 {
@@ -41,11 +35,11 @@ class RekomResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         //TODO Filter by role id
-        // $rekoms = new CommonRekomService();
-        // return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
+        $rekoms = new CommonRekomService();
+        return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
 
         
-        return parent::getEloquentQuery();
+        // return parent::getEloquentQuery();
     }
 
     public static function form(Form $form): Form

@@ -51,11 +51,11 @@ class OwnerResource extends Resource
         $auth_user = auth()->user();
 
     
-        $ktp_roles = $auth_user->hasRole(RoleEnum::POLSUS->value()) || $auth_user->hasRole(RoleEnum::HANDAK->value()) ? true : false;
+        $is_company = $auth_user->hasRole(RoleEnum::POLSUS->value()) || $auth_user->hasRole(RoleEnum::HANDAK->value()) ? true : false;
 
         return $form
             ->schema([
-                Fieldset::make('Informasi Pribadi')
+                Fieldset::make($is_company ? 'Informasi Instansi / Perusahaan':'Informasi Pribadi')
                 ->schema([
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')
@@ -63,7 +63,7 @@ class OwnerResource extends Resource
 
                 TextInput::make('no_ktp')
                     ->label('Nomor KTP')
-                    ->hidden($ktp_roles)
+                    ->hidden($is_company)
                     ->numeric()
                     ->placeholder('ex: 9999999999999999')
                     ->required(),

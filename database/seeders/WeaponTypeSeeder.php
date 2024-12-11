@@ -18,17 +18,11 @@ class WeaponTypeSeeder extends Seeder
         // WeaponType::factory(3)->create();
 
         WeaponType::insert([
-            ['name'=>'Pistol'],
+            ['name'=>'Rifles'],
             ['name'=>'SMG'],
-            ['name'=>'Rifle'],
             ['name'=>'Shotgun'],
             ['name'=>'Sniper'],
-            ['name'=>'Machinegun'],
-            ['name' => 'Handgun'],
-            ['name' => 'Melee'],
-            ['name' => 'Explosive'],
-            ['name' => 'Launcher'],
-            
+            ['name'=>'Pistol'],
         ]);
 
     }

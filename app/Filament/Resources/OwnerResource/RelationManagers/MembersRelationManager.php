@@ -27,6 +27,12 @@ class MembersRelationManager extends RelationManager
                     ->numeric()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('gender')
+                    ->options([
+                        'male' => 'Laki-laki',
+                        'female' => 'Perempuan',
+                    ])
+                    ->required(),   
                 Forms\Components\TextInput::make('address')
                     ->required()
                     ->maxLength(255),
@@ -43,6 +49,11 @@ class MembersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('gender')
+                ->label('Jenis Kelamin')
+                ->formatStateUsing(fn(string $state): string => $state == 'male' ? 'Laki-laki' : 'Perempuan'),
+                Tables\Columns\TextColumn::make('address'),
+                Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('ownerType.name')->badge(),
             ])
             ->filters([
