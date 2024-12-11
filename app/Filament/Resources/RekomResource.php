@@ -11,7 +11,6 @@ use App\Models\Rekom;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -20,15 +19,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-use App\Filament\Resources\RekomResource\Forms\BeladiriFrom;
+use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 use App\Services\RekomServices\CommonRekomService;
-use Str;
-use Illuminate\Contracts\Support\Htmlable;
 
 class RekomResource extends Resource
 {
@@ -38,11 +34,12 @@ class RekomResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // $rekoms = new CommonRekomService();
-        // return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
+        //TODO Filter by role id
+        $rekoms = new CommonRekomService();
+        return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
 
         
-        return parent::getEloquentQuery();
+        // return parent::getEloquentQuery();
     }
 
     public static function form(Form $form): Form
@@ -118,6 +115,10 @@ class RekomResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DocumentAction::make()->vars(fn($record) => [
+                    DocsVar::make('$name')->value($record->name),
+                    DocsVar::make('$duration_in_month')->value($record->duration_in_month),
+                ])->model('App\Models\Rekom')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -47,7 +47,8 @@ class DatabaseSeeder extends Seeder
             BulletTypeSeeder::class,
             WeaponTypeSeeder::class,
             OwnerTypeSeeder::class,
-            RekomTypeSeeder::class
+            RekomTypeSeeder::class,
+            WeaponSeeder::class
             
         ]);
 

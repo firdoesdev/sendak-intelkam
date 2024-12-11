@@ -88,7 +88,7 @@ class WeaponsRelationManager extends RelationManager
                         'Hibah' => 'Hibah',
                     ])->live(),
                     Select::make('previous_owner_id')
-                    ->label('Pemilik Senjata')
+                    ->label('Pemilik Senjata sebelumnya')
                     ->options(Owner::all()->pluck('name', 'id'))
                     ->visible(fn(Get $get) => $get('description')),  
                 ])
@@ -100,7 +100,7 @@ class WeaponsRelationManager extends RelationManager
                 
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                 ->label('Hapus Senjata')
             ])

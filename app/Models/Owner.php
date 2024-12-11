@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\OwnerType;
 use App\Models\Weapon;
 use App\Models\Rekom;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Services\RekomServices\CommonRekomService;
 use App\Enums\RoleEnum;
@@ -23,6 +25,7 @@ class Owner extends Model
     protected $fillable = [
         'name',
         'no_ktp',
+        'gender',
         'address',
         'phone',
         'job',
@@ -35,24 +38,24 @@ class Owner extends Model
         'file_tes_kesehatan',
         'file_tes_psikologi',
         'file_tes_menembak',
+        'parent_id',
+        'owner_type_id'
     ];
 
-    //TODO Create Default Owner Type 
-    protected static function boot()
-    {
-        parent::boot();
+    // //TODO Create Default Owner Type 
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $rekom = new CommonRekomService();
-            if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
-                $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
-            }
-        });
-    }
+    //     static::creating(function ($model) {
+    //         $rekom = new CommonRekomService();
 
-    // protected $casts = [
-    //     'ktp_attachment' => 'array',
-    // ];
+    //         // Set default Owner Type except polsus
+    //         if (!auth()->user()->hasRole(RoleEnum::POLSUS->value())) {
+    //             $model->owner_type_id = $rekom->getOwnerTypeIdByRole();   // Set default Owner Type if not Polsus
+    //         }
+    //     });
+    // }
 
     public function ownerType()
     {
@@ -72,5 +75,15 @@ class Owner extends Model
     public function rekoms(): HasMany
     {
         return $this->hasMany(Rekom::class);
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(self::class,'parent_id');
+    }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(self::class,'parent_id');
     }
 }

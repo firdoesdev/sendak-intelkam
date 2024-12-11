@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 use App\Services\RekomServices\CommonRekomService;
 
+use TomatoPHP\FilamentDocs\Facades\FilamentDocs;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
+
 class Rekom extends Model
 {
     /** @use HasFactory<\Database\Factories\RekomFactory> */
@@ -36,10 +39,18 @@ class Rekom extends Model
         static::creating(function ($model) {
             $rekom = new CommonRekomService();
            
-            $model->role_id = $rekom->getRekomRoleId();   // Set Rekom Division berdasarkan user login
+            // Set Rekom Division berdasarkan user login
+            $model->role_id = $rekom->getRekomRoleId();   
             
         });
 
+        FilamentDocs::register([
+            DocsVar::make('$OWNER_NAME')
+                ->label('Owner')
+                ->model(Owner::class)
+                ->column('Pemilik'),
+           
+        ]);
         
     }
 

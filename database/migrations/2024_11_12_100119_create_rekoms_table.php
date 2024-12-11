@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('no_rekom')->nullable()->index();
             $table->date('activated_at')->nullable();
             $table->date('expired_at')->nullable();
+            $table->integer('extended_times')->default(0);
             $table->enum('status', [
                 RekomStatusEnum::DRAFT->value(), 
                 RekomStatusEnum::ACTIVE->value(), 

@@ -16,9 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('no_ktp')->unique()->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string(column: 'job')->nullable();
+            $table->string('parent_id')->nullable()->references('id')->on('owners')->nullOnDelete();
             $table->string('file_ktp')->nullable();
             $table->string('file_npwp')->nullable();
             $table->string('file_ksk')->nullable();

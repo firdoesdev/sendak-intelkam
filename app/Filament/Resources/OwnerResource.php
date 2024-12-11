@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\OwnerTypeEnum;
 use App\Enums\RoleEnum;
 use App\Filament\Resources\OwnerResource\Pages;
-use App\Filament\Resources\OwnerResource\RelationManagers\AttachmentRelationManager;
+use App\Filament\Resources\OwnerResource\RelationManagers\MembersRelationManager;
 use App\Filament\Resources\OwnerResource\RelationManagers\WeaponsRelationManager;
 use App\Models\Owner;
 use App\Models\OwnerType;
@@ -25,7 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 use App\Services\RekomServices\CommonRekomService;
-use Storage;
+use Filament\Forms\Get;
 
 class OwnerResource extends Resource
 {
@@ -48,27 +48,22 @@ class OwnerResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $auth_user = auth()->user();
 
-        $defaultOwnerTypeId = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first()->id;
+    
+        $is_company = $auth_user->hasRole(RoleEnum::POLSUS->value()) || $auth_user->hasRole(RoleEnum::HANDAK->value()) ? true : false;
 
         return $form
             ->schema([
-                Fieldset::make('Informasi Pribadi')
+                Fieldset::make($is_company ? 'Informasi Instansi / Perusahaan':'Informasi Pribadi')
                 ->schema([
-                    BelongsToSelect::make('ownerType')
-                    ->label('Jenis Kepemilikan')
-                    ->relationship('ownerType', 'name')
-                    ->default($defaultOwnerTypeId)
-                    ->disabled()
-                    ->required()
-                    ->hidden(),
-
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')
                     ->required(),
 
                 TextInput::make('no_ktp')
                     ->label('Nomor KTP')
+                    ->hidden($is_company)
                     ->numeric()
                     ->placeholder('ex: 9999999999999999')
                     ->required(),
@@ -84,7 +79,7 @@ class OwnerResource extends Resource
                     ->numeric()
                     ->required(),
                 TextInput::make('job')
-                    ->label('Pekerjaan')
+                    ->label('Pekerjaan / Bidang Usaha')
                     ->placeholder('ex: Pegawai Swasta')
                     ->required(),
                 ]),
@@ -134,12 +129,19 @@ class OwnerResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $auth_user = auth()->user();
+
+        $ktp_roles = $auth_user->hasRole(RoleEnum::POLSUS->value()) || $auth_user->hasRole(RoleEnum::HANDAK->value()) ? true : false;
+
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('no_ktp')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('no_ktp')->searchable()
+                ->hidden($ktp_roles)
+                ->sortable(),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('ownerType.name')->badge(),
                 Tables\Columns\TextColumn::make('address')->searchable(),
+                Tables\Columns\TextColumn::make('phone')->searchable(),
 
             ])
             ->filters([
@@ -163,6 +165,8 @@ class OwnerResource extends Resource
                 //
             RekomsRelationManager::class,
             WeaponsRelationManager::class,
+            MembersRelationManager::class
+            
             // AttachmentRelationManager::class
 
         ];
