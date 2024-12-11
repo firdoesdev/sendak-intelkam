@@ -10,6 +10,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use App\Services\RekomServices\CommonRekomService;
+
 class OwnersRelationManager extends RelationManager
 {
     protected static string $relationship = 'owners';
@@ -32,7 +34,10 @@ class OwnersRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('assigned_at'),
+                
+
             ])
+            // ->modifyQueryUsing(fn (Builder $query) => $query->where('parent_id', null))
             ->filters([
                 //
             ])

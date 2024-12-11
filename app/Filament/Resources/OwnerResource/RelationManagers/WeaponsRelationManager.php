@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
 use App\Models\OwnerWeapon;
 use App\Models\Owner;
+use App\Models\Weapon;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Tabs;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
+use App\Enums\OwnerTypeEnum;
 
 class WeaponsRelationManager extends RelationManager
 {
@@ -72,6 +74,10 @@ class WeaponsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('warehouse.name')->label('Gudang'),
                 Tables\Columns\TextColumn::make('status')->label('Status'),
                 Tables\Columns\TextColumn::make('description')->label('Keterangan'),
+                Tables\Columns\TextColumn::make('owners')
+                ->getStateUsing(fn (Weapon $record): string => $record->owners->where('parent_id','!=', null)->pluck('name')->implode(', '))
+                ->label('Member')
+                ->badge(),
             ])
             ->filters([
                 //
@@ -85,11 +91,16 @@ class WeaponsRelationManager extends RelationManager
                     $action->getRecordSelect()->label('Nomor Seri'),
                     TextInput::make('description')->label('Keterangan')->required(),
                     Select::make('description')->label('Status')->options([
+                        'Baru' => 'Baru',
                         'Hibah' => 'Hibah',
-                    ])->live(),
+                    ])
+                    ->required()
+                    ->live(),
                     Select::make('previous_owner_id')
                     ->label('Pemilik Senjata sebelumnya')
-                    ->options(Owner::all()->pluck('name', 'id'))
+                    ->options(Owner::whereHas('OwnerType', function($query){
+                        $query->where('name', OwnerTypeEnum::INDIVIDUAL->value());
+                    })->pluck('name', 'id'))
                     ->visible(fn(Get $get) => $get('description')),  
                 ])
                 /* TODO after attach
@@ -102,7 +113,6 @@ class WeaponsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
-                ->label('Hapus Senjata')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

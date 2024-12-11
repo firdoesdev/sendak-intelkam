@@ -14,6 +14,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Tabs;
@@ -60,7 +61,7 @@ class OwnerResource extends Resource
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')
                     ->required(),
-
+                // TextInput::make('weapons'),
                 TextInput::make('no_ktp')
                     ->label('Nomor KTP')
                     ->hidden($is_company)
