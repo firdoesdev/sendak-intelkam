@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('no_ktp')->unique()->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string(column: 'job')->nullable();
