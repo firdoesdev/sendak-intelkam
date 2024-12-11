@@ -23,6 +23,17 @@ class MembersRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('no_ktp')
+                    ->numeric()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('address')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->numeric()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -32,7 +43,7 @@ class MembersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('ownerType.name'),
+                Tables\Columns\TextColumn::make('ownerType.name')->badge(),
             ])
             ->filters([
                 //
@@ -40,6 +51,9 @@ class MembersRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                 ->mutateFormDataUsing(function(array $data){
+                    /**
+                     *  Default set to `Individual` member if add member of company
+                     */
                     $getOwnerType = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first();
                     return array_merge($data, ['owner_type_id' => $getOwnerType->id]);
                 }),

@@ -100,7 +100,7 @@ class WeaponsRelationManager extends RelationManager
                 
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                 ->label('Hapus Senjata')
             ])
