@@ -50,6 +50,13 @@ class WeaponsRelationManager extends RelationManager
                 ->required()
                 ->maxLength(255),
 
+                Forms\Components\Select::make('status')
+                ->options([
+                    'active' => 'Aktif',
+                    'inactive' => 'Tidak Aktif',
+                ])
+                ->label('Status'),
+
                 BelongsToSelect::make('weapon_type_id')
                 ->label('Jenis Senjata')
                 ->searchable()
@@ -72,12 +79,16 @@ class WeaponsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('weaponType.name')->label('Jenis Senjata'),
                 Tables\Columns\TextColumn::make('caliber')->label('Kaliber'),
                 Tables\Columns\TextColumn::make('warehouse.name')->label('Gudang'),
-                Tables\Columns\TextColumn::make('status')->label('Status'),
+                Tables\Columns\SelectColumn::make('status')
+                ->options([
+                    'active' => 'Aktif',
+                    'inactive' => 'Tidak Aktif',
+                ])
+                ->label('Status'),
                 Tables\Columns\TextColumn::make('description')->label('Keterangan'),
                 Tables\Columns\TextColumn::make('owners')
                 ->getStateUsing(fn (Weapon $record): string => $record->owners->where('parent_id','!=', null)->pluck('name')->implode(', '))
-                ->label('Member')
-                ->badge(),
+                ->label('Member'),
             ])
             ->filters([
                 //
@@ -89,7 +100,6 @@ class WeaponsRelationManager extends RelationManager
                 ->label('Pilih Senjata')
                 ->form(fn(AttachAction $action) => [
                     $action->getRecordSelect()->label('Nomor Seri'),
-                    TextInput::make('description')->label('Keterangan')->required(),
                     Select::make('description')->label('Status')->options([
                         'Baru' => 'Baru',
                         'Hibah' => 'Hibah',
@@ -103,6 +113,7 @@ class WeaponsRelationManager extends RelationManager
                     })->pluck('name', 'id'))
                     ->visible(fn(Get $get) => $get('description')),  
                 ])
+                
                 /* TODO after attach
                  - for default set status `active` when attaced
                  - set all previous ownership status to 'inactive'

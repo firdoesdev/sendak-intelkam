@@ -32,10 +32,6 @@ class OwnersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('assigned_at'),
-                
-
             ])
             // ->modifyQueryUsing(fn (Builder $query) => $query->where('parent_id', null))
             ->filters([

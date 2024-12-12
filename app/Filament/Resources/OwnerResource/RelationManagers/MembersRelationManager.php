@@ -71,9 +71,7 @@ class MembersRelationManager extends RelationManager
                 ->formatStateUsing(fn(string $state): string => $state == 'male' ? 'Laki-laki' : 'Perempuan'),
                 Tables\Columns\TextColumn::make('address'),
                 Tables\Columns\TextColumn::make('phone'),
-                // Tables\Columns\TextColumn::make('ownerType.name')->badge(),
                 Tables\Columns\TextColumn::make('weapons.name')
-                // ->formatStateUsing(fn(string $state): string => $state['serial'].' Weapons')
                 ->badge()
             ])
             ->filters([

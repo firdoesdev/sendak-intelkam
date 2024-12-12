@@ -38,7 +38,7 @@ class RekomResource extends Resource
         $rekoms = new CommonRekomService();
         return parent::getEloquentQuery()->where('role_id', $rekoms->getRekomRoleId());
 
-        
+
         // return parent::getEloquentQuery();
     }
 
@@ -52,6 +52,7 @@ class RekomResource extends Resource
                         ->validationMessages([
                             'required' => 'No. Rekom Harus Diisi',
                         ]),
+
                     Select::make('status')
                         ->options([
                             RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
@@ -59,6 +60,9 @@ class RekomResource extends Resource
                             RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
                             RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label()
                         ])
+                        ->required(),
+                    Select::make('rekom_type_id')
+                        ->relationship('rekomType', 'name')
                         ->required(),
                     DatePicker::make('activated_at')
                         ->label('Tgl Rekom Terbit')
