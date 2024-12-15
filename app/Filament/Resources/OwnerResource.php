@@ -14,6 +14,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Tabs;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 use App\Services\RekomServices\CommonRekomService;
 use Filament\Forms\Get;
+use Auth;
 
 class OwnerResource extends Resource
 {
@@ -60,7 +62,7 @@ class OwnerResource extends Resource
                 TextInput::make('name')
                     ->placeholder('ex: John Doe')
                     ->required(),
-
+                // TextInput::make('weapons'),
                 TextInput::make('no_ktp')
                     ->label('Nomor KTP')
                     ->hidden($is_company)
@@ -161,13 +163,12 @@ class OwnerResource extends Resource
 
     public static function getRelations(): array
     {
+        // dd(Auth::user());
         return [
                 //
             RekomsRelationManager::class,
             WeaponsRelationManager::class,
             MembersRelationManager::class
-            
-            // AttachmentRelationManager::class
 
         ];
     }

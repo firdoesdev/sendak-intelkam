@@ -29,6 +29,11 @@ class RekomTypeSeeder extends Seeder
                 'name' => 'Rekomendasi P3',
                 'duration_in_month' => 12,
                 // 'can_be_renewed' => true
+            ],
+            [
+                'name' => 'Ijin Gudang',
+                'duration_in_month' => 12,
+                // 'can_be_renewed' => true
             ]
         ];
 

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Components\Select;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -11,13 +12,34 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\OwnerType;
 use App\Enums\OwnerTypeEnum;   
+use App\Models\Owner;
+use App\Models\Weapon;
+
+use App\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Model;
+
 
 class MembersRelationManager extends RelationManager
 {
     protected static string $relationship = 'members';
 
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        /** Show if polsus */
+        $isPolsus = auth()->user()->hasRole(RoleEnum::POLSUS->value());
+        
+        return $isPolsus;
+    }
+
     public function form(Form $form): Form
     {
+        /**
+         * List of Weapons for polsus
+         *  - Add Weapon first on weapon tab
+         *  - Get List of weapns & assign to member
+         */
+        $listOwnerWeapons = $this->getOwnerRecord()->weapons()->pluck('name', 'owner_weapons.weapon_id');
+        
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -40,6 +62,11 @@ class MembersRelationManager extends RelationManager
                     ->numeric()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('weapons')
+                ->label('Assign Senjata')
+                ->relationship('weapons', 'name')
+                ->options($listOwnerWeapons)
+                    
             ]);
     }
 
@@ -54,7 +81,8 @@ class MembersRelationManager extends RelationManager
                 ->formatStateUsing(fn(string $state): string => $state == 'male' ? 'Laki-laki' : 'Perempuan'),
                 Tables\Columns\TextColumn::make('address'),
                 Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('ownerType.name')->badge(),
+                Tables\Columns\TextColumn::make('weapons.name')
+                ->badge()
             ])
             ->filters([
                 //
@@ -68,10 +96,19 @@ class MembersRelationManager extends RelationManager
                     $getOwnerType = OwnerType::where('name', OwnerTypeEnum::INDIVIDUAL->value())->first();
                     return array_merge($data, ['owner_type_id' => $getOwnerType->id]);
                 }),
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                //TODO Add weapon to member polsus
+                // Tables\Actions\Action::make('Add Weapon')
+                // ->form([
+                //     Select::make('ownerId')->options(Weapon::all()->pluck('serial', 'id')),
+                // ])
+                // ->action(fn($record, array $data) => $record->weapons()->attach($data['ownerId']))
+               
+              
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

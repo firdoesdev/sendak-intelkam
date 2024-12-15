@@ -23,6 +23,9 @@ class WeaponTypeSeeder extends Seeder
             ['name'=>'Shotgun'],
             ['name'=>'Sniper'],
             ['name'=>'Pistol'],
+            ['name'=>'Grenade'],
+            ['name'=>'TNT'],
+            ['name'=>'Dynamite'],
         ]);
 
     }

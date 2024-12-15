@@ -29,8 +29,13 @@ class WeaponResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('serial')
                     ->label('Seri Senjata')
+                    ->unique()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'unique' => 'Seri Senjata sudah terdaftar',
+                        'required' => 'Seri Senjata wajib diisi',
+                    ]),
                     
                     Forms\Components\TextInput::make('name')
                     ->label('Nama Senjata')
@@ -49,13 +54,13 @@ class WeaponResource extends Resource
 
                     BelongsToSelect::make('weapon_type_id')
                     ->label('Jenis Senjata')
-                    ->searchable()
-                    ->relationship('weaponType', 'name'),
+                    ->relationship('weaponType', 'name')
+                    ->required(),
 
                     BelongsToSelect::make('warehouse_id')
                     ->label('Gudang')
-                    ->searchable()
                     ->relationship('warehouse', 'name')
+                    ->required(),
             ]);
     }
 

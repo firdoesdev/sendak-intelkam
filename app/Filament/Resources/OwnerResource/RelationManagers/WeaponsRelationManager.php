@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
 use App\Models\OwnerWeapon;
 use App\Models\Owner;
+use App\Models\Weapon;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Tabs;
@@ -18,6 +19,8 @@ use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
+use App\Enums\OwnerTypeEnum;
+use App\Enums\RoleEnum;
 
 class WeaponsRelationManager extends RelationManager
 {
@@ -48,6 +51,13 @@ class WeaponsRelationManager extends RelationManager
                 ->required()
                 ->maxLength(255),
 
+                Forms\Components\Select::make('status')
+                ->options([
+                    'active' => 'Aktif',
+                    'inactive' => 'Tidak Aktif',
+                ])
+                ->label('Status'),
+
                 BelongsToSelect::make('weapon_type_id')
                 ->label('Jenis Senjata')
                 ->searchable()
@@ -70,8 +80,18 @@ class WeaponsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('weaponType.name')->label('Jenis Senjata'),
                 Tables\Columns\TextColumn::make('caliber')->label('Kaliber'),
                 Tables\Columns\TextColumn::make('warehouse.name')->label('Gudang'),
-                Tables\Columns\TextColumn::make('status')->label('Status'),
+                Tables\Columns\SelectColumn::make('status')
+                ->options([
+                    'active' => 'Aktif',
+                    'inactive' => 'Tidak Aktif',
+                ])
+                ->label('Status'),
                 Tables\Columns\TextColumn::make('description')->label('Keterangan'),
+                Tables\Columns\TextColumn::make('owners')
+                ->visible(auth()->user()->hasRole(RoleEnum::POLSUS->value()))
+                ->getStateUsing(fn (Weapon $record): string => $record->owners->where('parent_id','!=', null)->pluck('name')->implode(', '))
+                ->label('Member'),
+                
             ])
             ->filters([
                 //
@@ -83,15 +103,20 @@ class WeaponsRelationManager extends RelationManager
                 ->label('Pilih Senjata')
                 ->form(fn(AttachAction $action) => [
                     $action->getRecordSelect()->label('Nomor Seri'),
-                    TextInput::make('description')->label('Keterangan')->required(),
                     Select::make('description')->label('Status')->options([
+                        'Baru' => 'Baru',
                         'Hibah' => 'Hibah',
-                    ])->live(),
+                    ])
+                    ->required()
+                    ->live(),
                     Select::make('previous_owner_id')
                     ->label('Pemilik Senjata sebelumnya')
-                    ->options(Owner::all()->pluck('name', 'id'))
+                    ->options(Owner::whereHas('OwnerType', function($query){
+                        $query->where('name', OwnerTypeEnum::INDIVIDUAL->value());
+                    })->pluck('name', 'id'))
                     ->visible(fn(Get $get) => $get('description')),  
                 ])
+                
                 /* TODO after attach
                  - for default set status `active` when attaced
                  - set all previous ownership status to 'inactive'
@@ -102,7 +127,6 @@ class WeaponsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
-                ->label('Hapus Senjata')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
