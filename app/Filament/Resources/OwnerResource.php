@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OwnerResource\RelationManagers\RekomsRelationManager;
 use App\Services\RekomServices\CommonRekomService;
 use Filament\Forms\Get;
+use Auth;
 
 class OwnerResource extends Resource
 {
@@ -162,13 +163,12 @@ class OwnerResource extends Resource
 
     public static function getRelations(): array
     {
+        // dd(Auth::user());
         return [
                 //
             RekomsRelationManager::class,
             WeaponsRelationManager::class,
             MembersRelationManager::class
-            
-            // AttachmentRelationManager::class
 
         ];
     }

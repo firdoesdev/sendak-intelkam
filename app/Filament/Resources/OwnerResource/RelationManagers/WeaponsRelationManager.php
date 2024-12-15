@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
 use App\Enums\OwnerTypeEnum;
+use App\Enums\RoleEnum;
 
 class WeaponsRelationManager extends RelationManager
 {
@@ -87,8 +88,10 @@ class WeaponsRelationManager extends RelationManager
                 ->label('Status'),
                 Tables\Columns\TextColumn::make('description')->label('Keterangan'),
                 Tables\Columns\TextColumn::make('owners')
+                ->visible(auth()->user()->hasRole(RoleEnum::POLSUS->value()))
                 ->getStateUsing(fn (Weapon $record): string => $record->owners->where('parent_id','!=', null)->pluck('name')->implode(', '))
                 ->label('Member'),
+                
             ])
             ->filters([
                 //

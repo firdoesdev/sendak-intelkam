@@ -15,11 +15,21 @@ use App\Enums\OwnerTypeEnum;
 use App\Models\Owner;
 use App\Models\Weapon;
 
-use Filament\Tables\Actions\AttachAction;
+use App\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Model;
+
 
 class MembersRelationManager extends RelationManager
 {
     protected static string $relationship = 'members';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        /** Show if polsus */
+        $isPolsus = auth()->user()->hasRole(RoleEnum::POLSUS->value());
+        
+        return $isPolsus;
+    }
 
     public function form(Form $form): Form
     {

@@ -9,6 +9,7 @@ use App\Filament\Resources\RekomResource\Pages;
 use App\Filament\Resources\RekomResource\RelationManagers\OwnerRelationManager;
 use App\Models\Rekom;
 
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
@@ -17,6 +18,7 @@ use Filament\Forms\Form;
 
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -25,6 +27,8 @@ use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
 use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 use App\Services\RekomServices\CommonRekomService;
+use Filament\Tables\Actions\ExportAction;
+use App\Filament\Exports\RekomExporter;
 
 class RekomResource extends Resource
 {
@@ -117,8 +121,10 @@ class RekomResource extends Resource
             ])
             ->defaultGroup('status')
             ->defaultSort('created_at', 'desc')
+            
             ->actions([
                 Tables\Actions\EditAction::make(),
+               
                 DocumentAction::make()->vars(fn($record) => [
                     DocsVar::make('$name')->value($record->name),
                     DocsVar::make('$duration_in_month')->value($record->duration_in_month),
@@ -127,6 +133,11 @@ class RekomResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                ]),
+                ExportBulkAction::make()
+                ->exporter(RekomExporter::class)
+                ->formats([
+                    ExportFormat::Csv,
                 ]),
             ]);
     }
