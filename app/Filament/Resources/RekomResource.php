@@ -94,7 +94,7 @@ class RekomResource extends Resource
 
     public static function table(Table $table): Table
     {
-        dump(storage_path('app/public'));
+        // dump(storage_path('app/public'));
         return $table
             ->columns([
                 //
