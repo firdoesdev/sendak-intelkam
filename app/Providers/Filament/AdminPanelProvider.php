@@ -58,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->databaseNotifications()
+            ->lazyLoadedDatabaseNotifications()
             ->databaseNotificationsPolling('30s')
             ->plugins([
                 FilamentAccessManagementPanel::make(),

@@ -9,6 +9,7 @@
         "filament/filament": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "pxlrbt/filament-excel": "^2.3",
         "solution-forest/filament-access-management": "^2.2",
         "tomatophp/filament-docs": "^1.0"
     },

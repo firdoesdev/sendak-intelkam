@@ -23,12 +23,16 @@ use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
 use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 use App\Services\RekomServices\CommonRekomService;
 use Filament\Tables\Actions\ExportAction;
 use App\Filament\Exports\RekomExporter;
+
+// use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class RekomResource extends Resource
 {
@@ -121,10 +125,10 @@ class RekomResource extends Resource
             ])
             ->defaultGroup('status')
             ->defaultSort('created_at', 'desc')
-            
+
             ->actions([
                 Tables\Actions\EditAction::make(),
-               
+
                 DocumentAction::make()->vars(fn($record) => [
                     DocsVar::make('$name')->value($record->name),
                     DocsVar::make('$duration_in_month')->value($record->duration_in_month),
@@ -133,12 +137,20 @@ class RekomResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    // ExportBulkAction::make()->exports([
+                    //     ExcelExport::make()->queue(),
+                    // ])
+                    //TODO Default Bulck Action
+                    ExportBulkAction::make()
+                        ->exporter(RekomExporter::class)
+                        ->formats([
+                            ExportFormat::Xlsx,
+                        ]),
                 ]),
-                ExportBulkAction::make()
-                ->exporter(RekomExporter::class)
-                ->formats([
-                    ExportFormat::Csv,
-                ]),
+
+
+
+
             ]);
     }
 
