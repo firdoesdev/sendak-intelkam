@@ -28,6 +28,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('5s')
             ->path('admin')
             ->login()
             ->colors([
@@ -57,9 +59,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->databaseNotifications()
-            ->lazyLoadedDatabaseNotifications()
-            ->databaseNotificationsPolling('30s')
             ->plugins([
                 FilamentAccessManagementPanel::make(),
                 FilamentDocsPlugin::make()

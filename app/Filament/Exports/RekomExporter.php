@@ -17,15 +17,15 @@ class RekomExporter extends Exporter
             ExportColumn::make('id')
                 ->label('ID'),
             ExportColumn::make('no_rekom'),
-            ExportColumn::make('activated_at'),
-            ExportColumn::make('expired_at'),
-            ExportColumn::make('extended_times'),
-            ExportColumn::make('status'),
-            ExportColumn::make('role_id'),
-            ExportColumn::make('owner_id'),
-            ExportColumn::make('rekom_type_id'),
-            ExportColumn::make('created_at'),
-            ExportColumn::make('updated_at'),
+            // ExportColumn::make('activated_at'),
+            // ExportColumn::make('expired_at'),
+            // ExportColumn::make('extended_times'),
+            // ExportColumn::make('status'),
+            // ExportColumn::make('role_id'),
+            // ExportColumn::make('owner_id'),
+            // ExportColumn::make('rekom_type_id'),
+            // ExportColumn::make('created_at'),
+            // ExportColumn::make('updated_at'),
         ];
     }
 

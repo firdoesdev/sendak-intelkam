@@ -18,12 +18,12 @@ use Filament\Forms\Form;
 
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\ExportBulkAction;
+
 use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use pxlrbt\FilamentExcel\Exports\ExcelExport;
+
 use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
 use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
@@ -31,7 +31,10 @@ use App\Services\RekomServices\CommonRekomService;
 use Filament\Tables\Actions\ExportAction;
 use App\Filament\Exports\RekomExporter;
 
+use Filament\Tables\Actions\ExportBulkAction;
+
 // use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 
 class RekomResource extends Resource
@@ -91,6 +94,7 @@ class RekomResource extends Resource
 
     public static function table(Table $table): Table
     {
+        dump(storage_path('app/public'));
         return $table
             ->columns([
                 //
@@ -134,19 +138,37 @@ class RekomResource extends Resource
                     DocsVar::make('$duration_in_month')->value($record->duration_in_month),
                 ])->model('App\Models\Rekom')
             ])
+            ->headerActions([
+
+                //  ->exports([
+                //      ExcelExport::class
+                //  ]),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    // ExportBulkAction::make()->exports([
-                    //     ExcelExport::make()->queue(),
-                    // ])
+                    // ExportBulkAction::make()
+                    //     ->exports([
+                    //         ExcelExport::make()
+                    //         ->fromTable()
+                    //         ->queue()
+                            
+                    //     ]),
+
                     //TODO Default Bulck Action
                     ExportBulkAction::make()
                         ->exporter(RekomExporter::class)
                         ->formats([
                             ExportFormat::Xlsx,
-                        ]),
+                        ])
+                        // ->url('https://sendak-intelkam.test')
+                        ->fileDisk('public'),
+                        
+                        
+
+
                 ]),
+
 
 
 
