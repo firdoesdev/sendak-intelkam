@@ -4,18 +4,23 @@ namespace App\Filament\Resources\OwnerResource\RelationManagers;
 
 use App\Enums\RekomStatusEnum;
 use App\Enums\RoleEnum;
+use App\Models\Rekom;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\Column;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
+
+use Illuminate\Database\Eloquent\Model;
 
 use Spatie\Permission\Models\Role;
 
@@ -32,6 +37,10 @@ class RekomsRelationManager extends RelationManager
                 Grid::make(6)->schema([
                     Group::make()->schema([
                         Forms\Components\TextInput::make('no_rekom')
+                            ->required(),
+                        Forms\Components\BelongsToSelect::make('rekom_type_id')
+                            ->relationship('rekomType', 'name')
+                            ->label('Jenis Rekom')
                             ->required(),
 
                         Forms\Components\DatePicker::make('activated_at')
@@ -52,13 +61,34 @@ class RekomsRelationManager extends RelationManager
                             RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label(),
                         ])->default(RekomStatusEnum::DRAFT->value()),
                 ]),
+                Grid::make(6)->schema([
+                    Repeater::make('Explosives')
+                        ->columnSpan(6)
+                        ->schema([
+                            Grid::make()->schema([
+                                TextInput::make('name')
+                                    ->label('Nama Bahan Peledak')
+                                    ->required(),
+                                TextInput::make('serial')
+                                    ->label('serial')
+                                    ->required(),
+                                TextInput::make('qty')
+                                    ->label('Jumlah')
+                                    ->required(),
+                                TextInput::make('unit')
+                                    ->label('Satuan')
+                                    ->required(),
+                                Forms\Components\BelongsToSelect::make('warehouse')
+                                ->label('Gudang')    
+                                ->relationship('warehouse', 'name')
 
-
-
+                            ]),
+                        ])->relationship('explosives'),
+                ])->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
 
             ]);
 
-        // return $form;
+        
 
     }
 
@@ -68,6 +98,9 @@ class RekomsRelationManager extends RelationManager
             ->recordTitleAttribute('no_rekom')
             ->columns([
                 Tables\Columns\TextColumn::make('no_rekom'),
+                Tables\Columns\TextColumn::make('rekomType.name')
+                    ->label('Jenis Rekom')
+                    ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
 
                 Tables\Columns\TextColumn::make('role.name')
                     ->label('Divisi'),
@@ -94,6 +127,19 @@ class RekomsRelationManager extends RelationManager
                         'info' => RekomStatusEnum::DRAFT->value(),
                     ])
                     ->label('Status'),
+                
+                Tables\Columns\TextColumn::make('explosives.serial')->label('Serial')
+                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.name')->label('Nama Bahan Peledak')
+                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.qty')->label('Jumlah')
+                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.unit')->label('Unit')
+                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                    
+                // Tables\Columns\TextColumn::make('explosives.name')->label('Nama Bahan Peledak'),
+                // Tables\Columns\TextColumn::make('explosives.qty')->label('Jumlah'),
+                // Tables\Columns\TextColumn::make('explosives.unit')->label('Unit'),
             ])
             ->filters([
                 //
