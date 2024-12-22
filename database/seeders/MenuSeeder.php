@@ -80,19 +80,20 @@ class MenuSeeder extends Seeder
                 'order' => 4,
                 'parent_id' => 11,
             ], 
+            
             [
                 'title' => 'Documents',
                 'uri' => '/documents',
                 'icon' => 'heroicon-o-home',
                 'order' => 4,
-                'parent_id' => 11,
+                'parent_id' => null,
             ],
             [
                 'title' => 'Document Templates',
                 'uri' => '/document-templates',
                 'icon' => 'heroicon-o-home',
                 'order' => 5,
-                'parent_id' => 11,
+                'parent_id' => null,
             ],
             
 

@@ -24,17 +24,20 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 
+use Illuminate\Support\Facades\Storage;
 use TomatoPHP\FilamentDocs\Filament\Actions\DocumentAction;
 use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
 
 use App\Services\RekomServices\CommonRekomService;
-use Filament\Tables\Actions\ExportAction;
+// use Filament\Tables\Actions\ExportAction;
+// use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Exports\RekomExporter;
 
-use Filament\Tables\Actions\ExportBulkAction;
 
-// use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 
 class RekomResource extends Resource
@@ -95,6 +98,7 @@ class RekomResource extends Resource
     public static function table(Table $table): Table
     {
         // dump(storage_path('app/public'));
+        // dump(Storage::disk('public')->url(''));
         return $table
             ->columns([
                 //
@@ -139,33 +143,26 @@ class RekomResource extends Resource
                 ])->model('App\Models\Rekom')
             ])
             ->headerActions([
-
-                //  ->exports([
-                //      ExcelExport::class
-                //  ]),
+                ExportAction::make()
+                        ->exports([
+                            ExcelExport::make()
+                            ->withColumns([
+                                Column::make('no_rekom'),
+                                Column::make('activated_at'),
+                                Column::make('expired_at'),
+                                Column::make('status'),
+                                Column::make('rekom_type_id'),
+                                Column::make('owner.name')->heading('Pemilik'),
+                            ])
+                            ->withWriterType(\Maatwebsite\Excel\Excel::XLSX)
+                                
+                                
+                        ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    // ExportBulkAction::make()
-                    //     ->exports([
-                    //         ExcelExport::make()
-                    //         ->fromTable()
-                    //         ->queue()
-                            
-                    //     ]),
-
-                    //TODO Default Bulck Action
-                    ExportBulkAction::make()
-                        ->exporter(RekomExporter::class)
-                        ->formats([
-                            ExportFormat::Xlsx,
-                        ])
-                        // ->url('https://sendak-intelkam.test')
-                        ->fileDisk('public'),
-                        
-                        
-
+                    
 
                 ]),
 
