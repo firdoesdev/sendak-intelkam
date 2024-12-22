@@ -28,6 +28,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('5s')
             ->path('admin')
             ->login()
             ->colors([
@@ -38,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->globalSearch(false)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -57,8 +60,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
             ->plugins([
                 FilamentAccessManagementPanel::make(),
                 FilamentDocsPlugin::make()

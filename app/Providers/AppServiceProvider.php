@@ -3,6 +3,13 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
+use App\Models\Rekom;
+
+use TomatoPHP\FilamentDocs\Facades\FilamentDocs;
+use TomatoPHP\FilamentDocs\Services\Contracts\DocsVar;
+ 
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,8 +27,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if($this->app->environment('production')) {
-            \URL::forceScheme('https');
+            URL::forceScheme('https');
         }
         //
+
+        // FilamentDocs::register([
+        //     DocsVar::make('$NO_REKOM')
+        //         ->label('Post Title')
+        //         ->model(Rekom::class)
+        //         ->column('title'),
+            
+        // ]);
+        
     }
 }

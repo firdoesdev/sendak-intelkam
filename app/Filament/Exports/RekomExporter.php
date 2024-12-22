@@ -14,12 +14,18 @@ class RekomExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('no_rekom')->label('No Rekom'),
-            // ExportColumn::make('role.name')->label('Divisi'),
-            // ExportColumn::make('activated_at')->label('Tgl Rekom Terbit'),
-            // ExportColumn::make('expired_at')->label('Tgl Rekom Kadaluarsa'),
-            ExportColumn::make('status')->label('Status'),
-            //
+            ExportColumn::make('id')
+                ->label('ID'),
+            ExportColumn::make('no_rekom'),
+            // ExportColumn::make('activated_at'),
+            // ExportColumn::make('expired_at'),
+            // ExportColumn::make('extended_times'),
+            // ExportColumn::make('status'),
+            // ExportColumn::make('role_id'),
+            // ExportColumn::make('owner_id'),
+            // ExportColumn::make('rekom_type_id'),
+            // ExportColumn::make('created_at'),
+            // ExportColumn::make('updated_at'),
         ];
     }
 
