@@ -18,6 +18,8 @@ class Weapon extends Model
         'serial',
         'name',
         'caliber',
+        'qty',
+        'unit',
         'brand'
     ];
 
@@ -32,6 +34,10 @@ class Weapon extends Model
 
     public function warehouse(){
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function rekom(){
+        return $this->belongsTo(Rekom::class);
     }
 }
 

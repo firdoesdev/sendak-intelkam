@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Rekom;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,11 +23,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('caliber')->nullable();
             $table->string('brand')->nullable();
-            $table->integer('quantity')->default(1);
+            $table->integer('qty')->default(1);
             $table->string('unit')->nullable();
             $table->foreignIdFor(BulletType::class)->nullable();
             $table->foreignIdFor(WeaponType::class)->nullable();
             $table->foreignIdFor(Warehouse::class)->nullable();
+            $table->foreignIdFor(Rekom::class)->nullable();
             $table->timestamps();
         });
     }

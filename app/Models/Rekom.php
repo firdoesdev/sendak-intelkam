@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Permission\Models\Role;
@@ -67,4 +68,8 @@ class Rekom extends Model
         return $this->belongsTo(RekomType::class);
     }
 
+    public function explosives(): HasMany
+    {
+        return $this->hasMany(Weapon::class);
+    }
 }
