@@ -164,7 +164,6 @@ class OwnerResource extends Resource
 
     public static function getRelations(): array
     {
-        // dd(Auth::user());
         return [
                 //
             RekomsRelationManager::class,

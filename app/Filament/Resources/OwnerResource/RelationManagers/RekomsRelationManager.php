@@ -5,11 +5,15 @@ namespace App\Filament\Resources\OwnerResource\RelationManagers;
 use App\Enums\RekomStatusEnum;
 use App\Enums\RoleEnum;
 use App\Models\Rekom;
+use App\Models\Weapon;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -24,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use Spatie\Permission\Models\Role;
 
+// use Filament\Tables\Columns\Column;
+
 class RekomsRelationManager extends RelationManager
 {
 
@@ -34,8 +40,11 @@ class RekomsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Grid::make(6)->schema([
-                    Group::make()->schema([
+                // Fieldset::make('Detail Rekom')->schema([
+
+                // ]),
+                Grid::make(12)->schema([
+                    Fieldset::make('Detail Rekom')->schema([
                         Forms\Components\TextInput::make('no_rekom')
                             ->required(),
                         Forms\Components\BelongsToSelect::make('rekom_type_id')
@@ -52,17 +61,25 @@ class RekomsRelationManager extends RelationManager
                             ->default(now()->addYear())
                             ->required(),
                     ])
-                    ->columnSpan(4),
-                    Forms\Components\Radio::make('status')
-                        ->options([
-                            RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
-                            RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
-                            RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
-                            RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label(),
-                        ])->default(RekomStatusEnum::DRAFT->value()),
+                        ->columnSpan(8),
+                    Fieldset::make('Status')->schema([
+                        Forms\Components\Radio::make('status')
+                            ->options([
+                                RekomStatusEnum::ACTIVE->value() => RekomStatusEnum::ACTIVE->label(),
+                                RekomStatusEnum::EXPIRED->value() => RekomStatusEnum::EXPIRED->label(),
+                                RekomStatusEnum::EXPIRED_SOON->value() => RekomStatusEnum::EXPIRED_SOON->label(),
+                                RekomStatusEnum::DRAFT->value() => RekomStatusEnum::DRAFT->label(),
+                            ])->default(RekomStatusEnum::DRAFT->value())
+                            ->hiddenLabel()
+                            ->columnSpanFull(),
+                    ])
+
+                        ->columnSpan(4)
+
                 ]),
-                Grid::make(6)->schema([
-                    Repeater::make('Explosives')
+
+                Fieldset::make('Item')->schema([
+                    Repeater::make('explosives')
                         ->columnSpan(6)
                         ->schema([
                             Grid::make()->schema([
@@ -79,16 +96,24 @@ class RekomsRelationManager extends RelationManager
                                     ->label('Satuan')
                                     ->required(),
                                 Forms\Components\BelongsToSelect::make('warehouse')
-                                ->label('Gudang')    
-                                ->relationship('warehouse', 'name')
+                                    ->label('Gudang')
+                                    ->relationship('warehouse', 'name')
 
                             ]),
-                        ])->relationship('explosives'),
+                        ])
+                        ->addActionLabel('Tambahkan Item')
+                        ->addActionAlignment('right')
+                        ->hiddenLabel()
+                        ->collapsible()
+                        ->itemLabel(fn(array $state): ?string => $state['name'] ? $state['name'] . ' (' . $state['serial'] . ')' . ' - ' . $state['qty'] . '' . $state['unit'] : null)
+                        ->relationship('explosives')
                 ])->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+
+
 
             ]);
 
-        
+
 
     }
 
@@ -101,17 +126,20 @@ class RekomsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('rekomType.name')
                     ->label('Jenis Rekom')
                     ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
-
-                Tables\Columns\TextColumn::make('role.name')
-                    ->label('Divisi'),
-
                 Tables\Columns\TextColumn::make('activated_at')
-                    ->label('Tgl Rekom Terbit')
-                    ->extraAttributes(['class' => 'color-red-500'])
-                    ->date(),
-                Tables\Columns\TextColumn::make('expired_at')
-                    ->label('Tgl Rekom Kadaluarsa')
-                    ->date(),
+                    ->label('Durasi Rekom')
+                    ->getStateUsing(fn(Model $record): ?string => Carbon::parse($record['activated_at'])->format('M d, y') . ' - ' . Carbon::parse($record['expired_at'])->format('M d, y'))
+                    ->badge(),
+           
+                Tables\Columns\TextColumn::make('explosives.name')->label('Nama Bahan Peledak')
+                    ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.serial')->label('Serial')
+                    ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.qty')->label('Jumlah')
+                    ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+                Tables\Columns\TextColumn::make('explosives.unit')->label('Unit')
+                    ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->formatStateUsing(fn(string $state): string => RekomStatusEnum::from($state)->label())
                     ->icons([
@@ -127,20 +155,10 @@ class RekomsRelationManager extends RelationManager
                         'info' => RekomStatusEnum::DRAFT->value(),
                     ])
                     ->label('Status'),
-                
-                Tables\Columns\TextColumn::make('explosives.serial')->label('Serial')
-                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
-                Tables\Columns\TextColumn::make('explosives.name')->label('Nama Bahan Peledak')
-                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
-                Tables\Columns\TextColumn::make('explosives.qty')->label('Jumlah')
-                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
-                Tables\Columns\TextColumn::make('explosives.unit')->label('Unit')
-                ->visible(auth()->user()->hasRole(RoleEnum::HANDAK->value()) ? true : false),
-                    
-                // Tables\Columns\TextColumn::make('explosives.name')->label('Nama Bahan Peledak'),
-                // Tables\Columns\TextColumn::make('explosives.qty')->label('Jumlah'),
-                // Tables\Columns\TextColumn::make('explosives.unit')->label('Unit'),
+
+            
             ])
+            
             ->filters([
                 //
             ])

@@ -22,10 +22,20 @@ use Filament\Forms\Get;
 use App\Enums\OwnerTypeEnum;
 use App\Enums\RoleEnum;
 
+use Illuminate\Database\Eloquent\Model;
+
 class WeaponsRelationManager extends RelationManager
 {
     protected static string $relationship = 'weapons';
     protected static ?string $title = 'Senjata';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        /** Show if polsus */
+        $isHandak = auth()->user()->hasRole(RoleEnum::HANDAK->value());
+        
+        return !$isHandak;
+    }
 
     public function form(Form $form): Form
     {
