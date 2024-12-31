@@ -3,14 +3,14 @@ name: Deploy Laravel Application
 on:
   push:
     branches:
-      - develop # Sesuaikan dengan branch yang Anda gunakan
+      - develop # Adjust to the branch you are using
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout kode dari repository
+    # Checkout code from the repository
     - name: Checkout Repository
       uses: actions/checkout@v3
 
@@ -18,19 +18,19 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.3 # Sesuaikan dengan versi PHP Anda
+        php-version: 8.3 # Adjust to your PHP version
         extensions: mbstring, pdo, mysql, curl, dom
         coverage: none
 
-    # Instal Composer Dependencies
+    # Install Composer Dependencies
     - name: Install Composer Dependencies
       run: composer install --no-dev --optimize-autoloader
 
-    # Setup Node.js (Jika ada build assets)
+    # Setup Node.js (if there are build assets)
     # - name: Setup Node.js
     #   uses: actions/setup-node@v3
     #   with:
-    #     node-version: '18' # Versi Node.js
+    #     node-version: '18' # Node.js version
     # - name: Install Node Dependencies and Build Assets
     #   run: |
     #     npm ci
@@ -38,14 +38,13 @@ jobs:
 
     - name: Debug DNS Resolution
       run: ping -c 4 ${{ secrets.SERVER_HOST }} || echo "Cannot resolve hostname"
-  
 
     - name: Debug SSH Connection
       run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} echo "SSH Connection Successful"
 
-    # Copy Hasil ke Server
+    # Copy files to the server
     - name: Deploy to Server
-      uses: appleboy/scp-action@v0.1.7
+      uses: appleboy/scp-action@v0.1.8
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
@@ -53,13 +52,11 @@ jobs:
         source: .
         target: /root/sendak-intelkam
 
-    # Jalankan Perintah Setelah Deployment
-    - name: Run Post-Deploy Commands
+    # Run docker-compose commands on the server
+    - name: Run Docker-Compose
       run: |
         ssh -o StrictHostKeyChecking=no -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} << 'EOF'
         cd /root/sendak-intelkam
-        php artisan migrate --force
-        php artisan config:cache
-        php artisan route:cache
-        php artisan view:cache
+        docker-compose down
+        docker-compose up -d --build
         EOF
