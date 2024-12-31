@@ -50,7 +50,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         source: .
-        target: /root/sendak-intelkam
+        target: /sendak-intelkam
 
     # Run docker-compose commands on the server
     - name: Run Docker-Compose
